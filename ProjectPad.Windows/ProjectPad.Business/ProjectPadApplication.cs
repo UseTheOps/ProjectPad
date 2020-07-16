@@ -14,8 +14,8 @@ namespace ProjectPad.Business
 
         }
 
-        private static ITokenProvider _tokenProvider;
-        private static ISettingsManager _settingsMgr;
+        internal static ITokenProvider _tokenProvider;
+        internal static ISettingsManager _settingsMgr;
 
         private static ProjectPadApplication _singleton;
 
