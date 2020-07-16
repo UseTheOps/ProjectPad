@@ -64,7 +64,6 @@ namespace ProjectPadUWP
         private void TEnd_Tick(object sender, object e)
         {
             DismissExtendedSplash();
-            tEnd.Stop();
         }
 
         void RestoreState(bool loadState)
@@ -102,7 +101,7 @@ namespace ProjectPadUWP
                 PositionRing();
             }
 
-            if(!tEnd.IsEnabled)
+            if(tEnd !=null && !tEnd.IsEnabled)
                 tEnd.Start();
 
         }
@@ -117,10 +116,13 @@ namespace ProjectPadUWP
 
         void DismissExtendedSplash()
         {
+            tEnd.Stop();
+            tEnd = null;
             // Place the frame in the current Window
             Window.Current.Content = rootFrame;
             // Navigate to mainpage
             rootFrame.Navigate(typeof(MainPage));
+            
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

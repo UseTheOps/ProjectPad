@@ -22,6 +22,27 @@
     </Page.Resources>
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualStateGroup.Transitions>
+                    <VisualTransition GeneratedDuration="00:00:00"/>
+                </VisualStateGroup.Transitions>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowHeight="840" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="pnlContentNonConnecte.Orientation" Value="Vertical"/>
+                        <Setter Target="pnlTitreStack.Margin" Value="0"/>
+                        <Setter Target="grid.Margin" Value="0,60,0,0"/>
+
+                    </VisualState.Setters>
+                </VisualState>
+
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken), Mode=OneWay}" Background="#f5f5f5">
             <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" VerticalAlignment="Bottom" MaxWidth="140" HorizontalAlignment="Right" />
             <Button x:Name="btnDeconnexion" Click="btnDeconnexion_Click">Déconnexion</Button>
@@ -33,23 +54,25 @@
                     <GradientStop Offset="1" Color="#dcdcdc" />
                 </LinearGradientBrush>
             </Grid.Background>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid x:Name="grid" Width="600" Height="600" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,60,0,0" >
+            <StackPanel Orientation="Horizontal" x:Name="pnlContentNonConnecte" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid x:Name="grid" Width="600" Height="600" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" >
                     <Image x:Name="logoImageNotConnected" Source="logo-ops-noir.png" VerticalAlignment="Center" MaxWidth="220" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
                         <Image.RenderTransform>
                             <CompositeTransform ScaleX="0.45" ScaleY="0.45"/>
                         </Image.RenderTransform>
                     </Image>
                 </Grid>
-                <TextBlock Text="Use The Ops" HorizontalAlignment="Center" FontSize="32" />
-                <TextBlock Text="PROJECT PAD" HorizontalAlignment="Center" FontSize="16" Foreground="#292929" FontFamily="Segoe UI Light" />
-                <Button Margin="0,40,0,0" HorizontalAlignment="Center" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="0" BorderBrush="#dcdcdc" BorderThickness="1" Background="White" x:Name="btnConnexion" Click="btnConnexion_Click">
-                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                        <Image Source="ms-symbollockup_mssymbol_19.png" />
-                        <TextBlock Margin="12,0,6,0" FontSize="14">Connexion</TextBlock>
-                    </StackPanel>
-                    
-                </Button>
+                <StackPanel VerticalAlignment="Center" Margin="0,0,100,0" x:Name="pnlTitreStack">
+                    <TextBlock HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="32"><Span FontWeight="Black" Foreground="#125887">PROJECT</Span> PAD</TextBlock>
+                    <TextBlock Text="by Use The Ops" HorizontalAlignment="Center" FontSize="12" Foreground="#898989" FontFamily="Segoe UI Light" />
+                    <Button Margin="0,40,0,0" HorizontalAlignment="Center" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="0" BorderBrush="#dcdcdc" BorderThickness="1" Background="White" x:Name="btnConnexion" Click="btnConnexion_Click">
+                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                            <Image Source="ms-symbollockup_mssymbol_19.png" />
+                            <TextBlock Margin="12,0,6,0" FontSize="14">Connexion</TextBlock>
+                        </StackPanel>
+
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Grid>
 
