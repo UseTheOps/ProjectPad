@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="390e81e0-0766-42dd-9a3a-89eff0b0d70a"
-    Publisher="CN=Michael"
-    Version="1.0.2.0" />
+    Name="CreoIgnem.ProjectPad"
+    Publisher="CN=230A60E5-FA80-4D5A-9A0E-B4E47BA156C5"
+    Version="1.0.5.0" />
 
-  <mp:PhoneIdentity PhoneProductId="390e81e0-0766-42dd-9a3a-89eff0b0d70a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="182e776c-3109-4216-b8ca-a59caf321e8d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>ProjectPadUWP</DisplayName>
-    <PublisherDisplayName>Michael</PublisherDisplayName>
+    <DisplayName>Project Pad</DisplayName>
+    <PublisherDisplayName>Altazion</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

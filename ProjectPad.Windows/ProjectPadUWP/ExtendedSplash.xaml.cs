@@ -54,6 +54,9 @@ namespace ProjectPadUWP
                 PositionRing();
             }
 
+            if (tEnd != null && !tEnd.IsEnabled)
+                tEnd.Start();
+
             // Create a Frame to act as the navigation context
             rootFrame = new Frame();
 
@@ -101,8 +104,7 @@ namespace ProjectPadUWP
                 PositionRing();
             }
 
-            if(tEnd !=null && !tEnd.IsEnabled)
-                tEnd.Start();
+
 
         }
 
