@@ -59,6 +59,9 @@ namespace ProjectPadUWP
                 Window.Current.Content = rootFrame;
             }
 
+            ProjectPad.Business.ProjectPadApplication.Create(new TokenProvider(), new SettingsManager());
+            ProjectPad.Business.ProjectPadApplication.Instance.RefreshGlobals();
+
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)

@@ -26,6 +26,28 @@ namespace ProjectPadUWP
         public MainPage()
         {
             this.InitializeComponent();
+
+            this.DataContext = ProjectPad.Business.ProjectPadApplication.Instance;
+                
+        }
+
+        protected Visibility ToVisible(bool isVisible)
+        {
+            return isVisible ? Visibility.Visible : Visibility.Collapsed;
+        }
+        protected Visibility ToNoyVisible(bool isVisible)
+        {
+            return isVisible ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public ProjectPad.Business.ProjectPadApplication DataObject
+        {
+            get { return ProjectPad.Business.ProjectPadApplication.Instance; }
+        }
+
+        private void btnConnexion_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectPad.Business.ProjectPadApplication.Instance.TryConnect();
         }
     }
 }

@@ -10,6 +10,17 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken)}" Background="Red">
+
+        </StackPanel>
+        <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken)}" Background="#efefef">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="logo-ops-noir.png" VerticalAlignment="Center" MaxWidth="640" HorizontalAlignment="Center" />
+                <TextBlock Text="Use The Ops - Project Pad" HorizontalAlignment="Center" />
+                <Button HorizontalAlignment="Center" x:Name="btnConnexion" Click="btnConnexion_Click">Connexion</Button>
+            </StackPanel>
+        </Grid>
+        
 
     </Grid>
 </Page>
