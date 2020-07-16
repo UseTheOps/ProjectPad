@@ -32,10 +32,10 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="ProjectPadUWP.App">
       <uap:VisualElements
-        DisplayName="ProjectPadUWP"
+        DisplayName="Project Pad"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="ProjectPadUWP"
+        Description="Use The Ops&apos; Project Pad"
         BackgroundColor="#f5f5f5">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="ProjectPad">
           <uap:ShowNameOnTiles>

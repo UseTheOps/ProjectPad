@@ -35,7 +35,7 @@ namespace ProjectPad.Business
 
         public async void RefreshGlobals()
         {
-            bool newHasToken = await _tokenProvider.HasSilentToken();
+            bool newHasToken = await _tokenProvider.HasSilentGraphApiToken();
             if (newHasToken != HasToken)
             {
                 HasToken = newHasToken;
@@ -49,7 +49,7 @@ namespace ProjectPad.Business
 
         public void TryConnect()
         {
-            _tokenProvider.GetToken();
+            _tokenProvider.GetGraphApiToken();
         }
 
         public void ClearConnections()

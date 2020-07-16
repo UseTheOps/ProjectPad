@@ -12,6 +12,14 @@ namespace ProjectPadUWP
 {
     class TokenProvider : ITokenProvider
     {
+        private static readonly string[] _graphApiScopes = new string[]
+        {
+            "https://graph.microsoft.com/email",
+            "https://graph.microsoft.com/Files.ReadWrite.AppFolder",
+            "https://graph.microsoft.com/offline_access",
+            "https://graph.microsoft.com/User.Read",
+            "https://graph.microsoft.com/Files.ReadWrite.All"
+        };
 
         private class Secrets
         {
@@ -51,53 +59,75 @@ namespace ProjectPadUWP
                     .Build();
         }
 
-        public async Task<string> GetToken()
+        public async Task<string> GetGraphApiToken()
         {
-            var accounts = await PublicClientApp.GetAccountsAsync();
-            if (accounts != null)
+            try
             {
-                var firstAccount = accounts.FirstOrDefault();
-                if (firstAccount != null)
+                var accounts = await PublicClientApp.GetAccountsAsync();
+                if (accounts != null)
                 {
-                    var authResult = await PublicClientApp.AcquireTokenSilent(null, firstAccount)
-                                                          .ExecuteAsync();
-                    if (authResult != null)
-                        return authResult.AccessToken;
+                    var firstAccount = accounts.FirstOrDefault();
+                    if (firstAccount != null)
+                    {
+                        try
+                        {
+                            var authResult = await PublicClientApp.AcquireTokenSilent(_graphApiScopes, firstAccount)
+                                                                  .ExecuteAsync();
+                            if (authResult != null)
+                                return authResult.AccessToken;
+                        }
+                        catch (MsalUiRequiredException)
+                        {
+
+                        }
+                    }
+                }
+
+                var authResult2 = await PublicClientApp.AcquireTokenInteractive(_graphApiScopes)
+                          .ExecuteAsync();
+                if (authResult2 != null)
+                {
+                    OnTokenChanged();
+                    return authResult2.AccessToken;
                 }
             }
-
-            var authResult2 = await PublicClientApp.AcquireTokenInteractive(null)
-                      .ExecuteAsync();
-            if (authResult2 != null)
+            catch (MsalException ex)
             {
-                OnTokenChanged();
-                return authResult2.AccessToken;
+                System.Diagnostics.Debug.WriteLine(ex);
             }
 
             return null;
         }
 
-        public async Task<bool> HasSilentToken()
+        public async Task<bool> HasSilentGraphApiToken()
         {
-            var accounts = await PublicClientApp.GetAccountsAsync();
-            if (accounts == null)
+            try
+            {
+                var accounts = await PublicClientApp.GetAccountsAsync();
+                if (accounts == null)
+                    return false;
+                var firstAccount = accounts.FirstOrDefault();
+                if (firstAccount == null)
+                    return false;
+                var authResult = await PublicClientApp.AcquireTokenSilent(_graphApiScopes, firstAccount)
+                                                      .ExecuteAsync();
+                if (authResult == null)
+                    return false;
+                return true;
+
+            }
+            catch (MsalUiRequiredException)
+            {
                 return false;
-            var firstAccount = accounts.FirstOrDefault();
-            if (firstAccount == null)
-                return false;
-            var authResult = await PublicClientApp.AcquireTokenSilent(null, firstAccount)
-                                                  .ExecuteAsync();
-            if (authResult == null)
-                return false;
-            return true;
+            }
         }
 
         public async Task ClearAllTokens()
         {
             var accounts = await PublicClientApp.GetAccountsAsync();
-            if(accounts!=null && accounts.Count()>0)
+            if (accounts != null && accounts.Count() > 0)
             {
-                foreach(var acc in accounts)
+                foreach (var acc in accounts)
                     await PublicClientApp.RemoveAsync(acc);
                 OnTokenChanged();
             }

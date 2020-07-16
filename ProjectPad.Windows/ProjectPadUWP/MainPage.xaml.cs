@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using MUXC = Microsoft.UI.Xaml.Controls;
 
@@ -30,6 +31,23 @@ namespace ProjectPadUWP
             this.DataContext = ProjectPad.Business.ProjectPadApplication.Instance;
                 
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+                var t = ProjectPad.Business.ProjectPadApplication.Instance.HasToken;
+            if (!t)
+            {
+                // starts animation for login
+                StartNonConnected.Begin();
+            }
+            else
+            {
+                
+            }
+        }
+
 
         protected Visibility ToVisible(bool isVisible)
         {

@@ -8,19 +8,51 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Storyboard x:Name="StartNonConnected">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="logoImageNotConnected" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.45"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="logoImageNotConnected" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.45"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
 
     <Grid>
         <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken), Mode=OneWay}" Background="#f5f5f5">
+            <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" VerticalAlignment="Bottom" MaxWidth="140" HorizontalAlignment="Right" />
             <Button x:Name="btnDeconnexion" Click="btnDeconnexion_Click">Déconnexion</Button>
         </StackPanel>
-        <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken), Mode=OneWay}" Background="#efefef">
+        <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken), Mode=OneWay}">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Offset="0.5" Color="#efefef" />
+                    <GradientStop Offset="1" Color="#dcdcdc" />
+                </LinearGradientBrush>
+            </Grid.Background>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image Source="logo-ops-noir.png" VerticalAlignment="Center" MaxWidth="640" HorizontalAlignment="Center" />
-                <TextBlock Text="Use The Ops - Project Pad" HorizontalAlignment="Center" />
-                <Button HorizontalAlignment="Center" x:Name="btnConnexion" Click="btnConnexion_Click">Connexion</Button>
+                <Grid x:Name="grid" Width="600" Height="600" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,60,0,0" >
+                    <Image x:Name="logoImageNotConnected" Source="logo-ops-noir.png" VerticalAlignment="Center" MaxWidth="220" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
+                        <Image.RenderTransform>
+                            <CompositeTransform ScaleX="0.45" ScaleY="0.45"/>
+                        </Image.RenderTransform>
+                    </Image>
+                </Grid>
+                <TextBlock Text="Use The Ops" HorizontalAlignment="Center" FontSize="32" />
+                <TextBlock Text="PROJECT PAD" HorizontalAlignment="Center" FontSize="16" Foreground="#292929" FontFamily="Segoe UI Light" />
+                <Button Margin="0,40,0,0" HorizontalAlignment="Center" Style="{ThemeResource ButtonRevealStyle}" CornerRadius="0" BorderBrush="#dcdcdc" BorderThickness="1" Background="White" x:Name="btnConnexion" Click="btnConnexion_Click">
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Image Source="ms-symbollockup_mssymbol_19.png" />
+                        <TextBlock Margin="12,0,6,0" FontSize="14">Connexion</TextBlock>
+                    </StackPanel>
+                    
+                </Button>
             </StackPanel>
         </Grid>
-        
+
 
     </Grid>
 </Page>
