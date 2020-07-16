@@ -23,15 +23,24 @@ namespace ProjectPad.Business
         {
             _singleton = new ProjectPadApplication();
             _tokenProvider = tokenProvider;
+            _tokenProvider.TokenChanged += _tokenProvider_TokenChanged;
             _settingsMgr = settingsMgr;
             return _singleton;
         }
 
+        private static void _tokenProvider_TokenChanged(object sender, EventArgs e)
+        {
+            _singleton.RefreshGlobals();
+        }
+
         public async void RefreshGlobals()
         {
-            HasToken = await _tokenProvider.HasSilentToken();
-            // Important enough to raised an notification even if not changed
-            OnPropertyChanged("HasToken");
+            bool newHasToken = await _tokenProvider.HasSilentToken();
+            if (newHasToken != HasToken)
+            {
+                HasToken = newHasToken;
+                OnPropertyChanged("HasToken");
+            }
         }
 
         public static ProjectPadApplication Instance { get { return _singleton; } }
@@ -41,6 +50,11 @@ namespace ProjectPad.Business
         public void TryConnect()
         {
             _tokenProvider.GetToken();
+        }
+
+        public void ClearConnections()
+        {
+            _tokenProvider.ClearAllTokens();
         }
     }
 }

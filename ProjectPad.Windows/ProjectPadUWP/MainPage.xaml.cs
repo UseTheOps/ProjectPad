@@ -49,5 +49,10 @@ namespace ProjectPadUWP
         {
             ProjectPad.Business.ProjectPadApplication.Instance.TryConnect();
         }
+
+        private void btnDeconnexion_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectPad.Business.ProjectPadApplication.Instance.ClearConnections();
+        }
     }
 }

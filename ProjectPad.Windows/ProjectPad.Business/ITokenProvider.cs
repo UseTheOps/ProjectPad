@@ -9,5 +9,9 @@ namespace ProjectPad.Business
     {
         Task<bool> HasSilentToken();
         Task<string> GetToken();
+
+        Task ClearAllTokens();
+
+        event EventHandler TokenChanged;
     }
 }

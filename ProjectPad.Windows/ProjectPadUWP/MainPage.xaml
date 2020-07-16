@@ -10,10 +10,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken)}" Background="Red">
-
+        <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken), Mode=OneWay}" Background="#f5f5f5">
+            <Button x:Name="btnDeconnexion" Click="btnDeconnexion_Click">Déconnexion</Button>
         </StackPanel>
-        <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken)}" Background="#efefef">
+        <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken), Mode=OneWay}" Background="#efefef">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image Source="logo-ops-noir.png" VerticalAlignment="Center" MaxWidth="640" HorizontalAlignment="Center" />
                 <TextBlock Text="Use The Ops - Project Pad" HorizontalAlignment="Center" />

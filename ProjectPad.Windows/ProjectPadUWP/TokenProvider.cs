@@ -26,6 +26,14 @@ namespace ProjectPadUWP
 
         public static IPublicClientApplication PublicClientApp;
 
+
+        protected void OnTokenChanged()
+        {
+            TokenChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public event EventHandler TokenChanged;
+
         static TokenProvider()
         {
             string clientId = null;
@@ -61,7 +69,10 @@ namespace ProjectPadUWP
             var authResult2 = await PublicClientApp.AcquireTokenInteractive(null)
                       .ExecuteAsync();
             if (authResult2 != null)
+            {
+                OnTokenChanged();
                 return authResult2.AccessToken;
+            }
 
             return null;
         }
@@ -79,6 +90,17 @@ namespace ProjectPadUWP
             if (authResult == null)
                 return false;
             return true;
+        }
+
+        public async Task ClearAllTokens()
+        {
+            var accounts = await PublicClientApp.GetAccountsAsync();
+            if(accounts!=null && accounts.Count()>0)
+            {
+                foreach(var acc in accounts)
+                    await PublicClientApp.RemoveAsync(acc);
+                OnTokenChanged();
+            }
         }
     }
 }
