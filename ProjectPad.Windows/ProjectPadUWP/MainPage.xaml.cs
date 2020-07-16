@@ -6,6 +6,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,13 +31,10 @@ namespace ProjectPadUWP
         {
             this.InitializeComponent();
 
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-            // Set XAML element as a draggable region.
-            Window.Current.SetTitleBar(AppTitleBar);
+
+
             this.DataContext = ProjectPad.Business.ProjectPadApplication.Instance;
-                
+
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -47,7 +46,19 @@ namespace ProjectPadUWP
         {
             base.OnNavigatedTo(e);
 
-                var t = ProjectPad.Business.ProjectPadApplication.Instance.HasToken;
+
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+            // Set XAML element as a draggable region.
+            Window.Current.SetTitleBar(AppTitleBar);
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
+            titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
+            titleBar.ButtonBackgroundColor = c;
+
+            var t = ProjectPad.Business.ProjectPadApplication.Instance.HasToken;
             if (!t)
             {
                 // starts animation for login
@@ -55,7 +66,7 @@ namespace ProjectPadUWP
             }
             else
             {
-                
+
             }
         }
 
@@ -82,6 +93,11 @@ namespace ProjectPadUWP
         private void btnDeconnexion_Click(object sender, RoutedEventArgs e)
         {
             ProjectPad.Business.ProjectPadApplication.Instance.ClearConnections();
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ProjectPage));
         }
     }
 }

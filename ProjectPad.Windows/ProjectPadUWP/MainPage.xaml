@@ -50,6 +50,7 @@
         <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken), Mode=OneWay}" Background="#f5f5f5">
             <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" VerticalAlignment="Bottom" MaxWidth="140" HorizontalAlignment="Right" />
             <Button x:Name="btnDeconnexion" Click="btnDeconnexion_Click">Déconnexion</Button>
+            <Button x:Name="btnTest" Click="btnTest_Click">Test</Button>
         </StackPanel>
         <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken), Mode=OneWay}">
             <Grid.Background>
@@ -62,7 +63,7 @@
                 <Grid x:Name="grid" Width="600" Height="600" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" >
                     <Image x:Name="logoImageNotConnected" Source="logo-ops-noir.png" VerticalAlignment="Center" MaxWidth="220" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
                         <Image.RenderTransform>
-                            <CompositeTransform ScaleX="0.45" ScaleY="0.45"/>
+                            <CompositeTransform ScaleX="1" ScaleY="1"/>
                         </Image.RenderTransform>
                     </Image>
                 </Grid>
