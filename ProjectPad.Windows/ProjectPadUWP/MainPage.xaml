@@ -22,6 +22,7 @@
     </Page.Resources>
 
     <Grid>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualStateGroup.Transitions>
@@ -42,6 +43,9 @@
 
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
+
+
 
         <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken), Mode=OneWay}" Background="#f5f5f5">
             <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" VerticalAlignment="Bottom" MaxWidth="140" HorizontalAlignment="Right" />
@@ -76,6 +80,21 @@
             </StackPanel>
         </Grid>
 
+        <Grid x:Name="AppTitleBar" Background="Transparent" VerticalAlignment="Top">
+            <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
+            <!-- Using padding columns instead of Margin ensures that the background
+         paints the area under the caption control buttons (for transparent buttons). -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
+                <ColumnDefinition/>
+                <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="Assets/Square44x44Logo.png" 
+           Grid.Column="1" HorizontalAlignment="Left"  VerticalAlignment="Center"
+           Width="28" Height="28" Margin="12,0"/>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+               Margin="44,0,0,0" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="12"><Span FontWeight="Black" Foreground="#125887">PROJECT</Span> PAD</TextBlock>
+        </Grid>
 
     </Grid>
 </Page>

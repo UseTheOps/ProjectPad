@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -28,8 +29,18 @@ namespace ProjectPadUWP
         {
             this.InitializeComponent();
 
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+            // Set XAML element as a draggable region.
+            Window.Current.SetTitleBar(AppTitleBar);
             this.DataContext = ProjectPad.Business.ProjectPadApplication.Instance;
                 
+        }
+
+        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            AppTitleBar.Height = sender.Height;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
