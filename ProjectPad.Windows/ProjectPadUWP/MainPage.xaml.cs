@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectPad.Business;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -103,6 +104,12 @@ namespace ProjectPadUWP
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(ProjectPage));
+        }
+
+        private void SwipeItem_Invoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
+        {
+            var t = args.SwipeControl.DataContext;
+            lblTmp.Text = (t as RecentProject)?.Name;
         }
     }
 }

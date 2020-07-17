@@ -13,24 +13,30 @@
 
         <DataTemplate x:DataType="business:RecentProject" x:Key="RecentProject">
             <SwipeControl BorderThickness="1">
+                <SwipeControl.LeftItems>
+                    <SwipeItems>
+                        <SwipeItem Text="test" Invoked="SwipeItem_Invoked" />
+                    </SwipeItems>
+                </SwipeControl.LeftItems>
+                <Button BorderThickness="0" BorderBrush="{x:Null}" Background="Transparent">
+                    <Grid Margin="0,10,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
 
-            <Grid Margin="0,10,0,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <Border Background="#dcdcdc" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,20,0" />
-                <TextBlock Text="{x:Bind Name}" Grid.Column="1" FontWeight="SemiBold" Grid.Row="0" />
-                <TextBlock Text="{x:Bind LastChange}" Grid.Column="1" Grid.Row="1" Opacity="0.5" />
-            </Grid>
+                        <Border Background="#dcdcdc" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,20,0" />
+                        <TextBlock Text="{x:Bind Name}" Grid.Column="1" FontWeight="SemiBold" Grid.Row="0" />
+                        <TextBlock Text="{x:Bind LastChange}" Grid.Column="1" Grid.Row="1" Opacity="0.5" />
+                    </Grid>
+                </Button>
             </SwipeControl>
         </DataTemplate>
-        
+
         <Storyboard x:Name="StartNonConnected">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="logoImageNotConnected" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.45"/>
@@ -108,7 +114,9 @@
         <Grid x:Name="viewConnecte" Visibility="{x:Bind Mode=OneWay, Path=ToVisible(DataObject.HasToken)}" Background="{StaticResource TheBackground}">
 
             <ContentPresenter Content="{x:Bind DataObject.Me, Mode=OneWay}" ContentTemplate="{StaticResource MeTemplate}" VerticalAlignment="Top" Margin="40" HorizontalAlignment="Right" />
-            
+
+            <TextBlock x:Name="lblTmp" Margin="80" Text="-" />
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,4">
                 <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" MaxWidth="24" Margin="0,0,0,0"  />
                 <StackPanel VerticalAlignment="Center" Margin="10,0,10,0">
@@ -122,12 +130,12 @@
                     <TextBlock FontWeight="Thin" Text="accueil" FontSize="36" Opacity="1" VerticalAlignment="Bottom" Margin="-5,0,50,10" />
                 </Grid>
 
-                
+
 
                 <TextBlock Text="PROJETS RÉCENTS" FontWeight="Thin" Foreground="#696969" Margin="0,0,0,10" />
 
                 <muxc:ItemsRepeater ItemsSource="{Binding RecentProjects}" ItemTemplate="{StaticResource RecentProject}">
-                    
+
                 </muxc:ItemsRepeater>
 
                 <Button Style="{ThemeResource ButtonRevealStyle}" Background="Transparent">
