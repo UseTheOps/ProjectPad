@@ -5,10 +5,32 @@
     xmlns:local="using:ProjectPadUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:business="using:ProjectPad.Business"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
+
+        <DataTemplate x:DataType="business:RecentProject" x:Key="RecentProject">
+            <SwipeControl BorderThickness="1">
+
+            <Grid Margin="0,10,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Border Background="#dcdcdc" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,20,0" />
+                <TextBlock Text="{x:Bind Name}" Grid.Column="1" FontWeight="SemiBold" Grid.Row="0" />
+                <TextBlock Text="{x:Bind LastChange}" Grid.Column="1" Grid.Row="1" Opacity="0.5" />
+            </Grid>
+            </SwipeControl>
+        </DataTemplate>
+        
         <Storyboard x:Name="StartNonConnected">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="logoImageNotConnected" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.45"/>
@@ -19,10 +41,24 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <LinearGradientBrush x:Key="TheBackground" EndPoint="0,1">
+            <GradientStop Color="#efefef" Offset="0.5"/>
+            <GradientStop Color="#dcdcdc" Offset="1"/>
+        </LinearGradientBrush>
+
+        <local:ByteToImageSourceConverter x:Key="ByteToImage" />
+
+        <DataTemplate x:Key="MeTemplate" x:DataType="business:UserData">
+            <StackPanel Orientation="Horizontal">
+                <muxc:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind Image, Mode=OneWay, Converter={StaticResource ByteToImage}}" Height="48" />
+                <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
+            </StackPanel>
+        </DataTemplate>
+
+
     </Page.Resources>
 
     <Grid>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualStateGroup.Transitions>
@@ -46,19 +82,8 @@
 
 
 
+        <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken), Mode=OneWay}" Background="{StaticResource TheBackground}" d:IsLocked="True">
 
-        <StackPanel Orientation="Vertical" Visibility="{x:Bind ToVisible(DataObject.HasToken), Mode=OneWay}" Background="#f5f5f5">
-            <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" VerticalAlignment="Bottom" MaxWidth="140" HorizontalAlignment="Right" />
-            <Button x:Name="btnDeconnexion" Click="btnDeconnexion_Click">Déconnexion</Button>
-            <Button x:Name="btnTest" Click="btnTest_Click">Test</Button>
-        </StackPanel>
-        <Grid Visibility="{x:Bind ToNoyVisible(DataObject.HasToken), Mode=OneWay}">
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0,1">
-                    <GradientStop Offset="0.5" Color="#efefef" />
-                    <GradientStop Offset="1" Color="#dcdcdc" />
-                </LinearGradientBrush>
-            </Grid.Background>
             <StackPanel Orientation="Horizontal" x:Name="pnlContentNonConnecte" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid x:Name="grid" Width="600" Height="600" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" >
                     <Image x:Name="logoImageNotConnected" Source="logo-ops-noir.png" VerticalAlignment="Center" MaxWidth="220" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
@@ -80,8 +105,69 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
+        <Grid x:Name="viewConnecte" Visibility="{x:Bind Mode=OneWay, Path=ToVisible(DataObject.HasToken)}" Background="{StaticResource TheBackground}">
 
-        <Grid x:Name="AppTitleBar" Background="Transparent" VerticalAlignment="Top">
+            <ContentPresenter Content="{x:Bind DataObject.Me, Mode=OneWay}" ContentTemplate="{StaticResource MeTemplate}" VerticalAlignment="Top" Margin="40" HorizontalAlignment="Right" />
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,4">
+                <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" MaxWidth="24" Margin="0,0,0,0"  />
+                <StackPanel VerticalAlignment="Center" Margin="10,0,10,0">
+                    <TextBlock HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="18"><Span FontWeight="Black" Foreground="#125887">PROJECT</Span> PAD</TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="65,0,65,0">
+                <Grid>
+                    <TextBlock FontWeight="Thin" Text="accueil" FontSize="72" Opacity="0.03" VerticalAlignment="Bottom" Margin="-15,0,50,0" />
+                    <TextBlock FontWeight="Thin" Text="accueil" FontSize="36" Opacity="1" VerticalAlignment="Bottom" Margin="-5,0,50,10" />
+                </Grid>
+
+                
+
+                <TextBlock Text="PROJETS RÉCENTS" FontWeight="Thin" Foreground="#696969" Margin="0,0,0,10" />
+
+                <muxc:ItemsRepeater ItemsSource="{Binding RecentProjects}" ItemTemplate="{StaticResource RecentProject}">
+                    
+                </muxc:ItemsRepeater>
+
+                <Button Style="{ThemeResource ButtonRevealStyle}" Background="Transparent">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="More" Margin="0,0,6,0" />
+                        <TextBlock>Plus de projets</TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <TextBlock Text="NOUVEAU PROJET" FontWeight="Thin" Foreground="#696969" Margin="0,20,0,10" />
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="NewFolder" Margin="0,0,6,0" />
+                            <TextBlock>Nouveau projet</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Document" Margin="0,0,6,0" />
+                            <TextBlock>Depuis un modèle</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Bookmarks" Margin="0,0,6,0" />
+                            <TextBlock>Depuis Azure DevOps</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+
+
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="AppTitleBar" Background="Transparent" VerticalAlignment="Top" d:IsLocked="True">
             <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
             <!-- Using padding columns instead of Margin ensures that the background
          paints the area under the caption control buttons (for transparent buttons). -->

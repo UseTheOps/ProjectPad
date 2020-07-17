@@ -11,7 +11,7 @@ namespace ProjectPad.Business
     {
         private ProjectPadApplication()
         {
-
+            RecentProjects = new List<RecentProject>();
         }
 
         internal static ITokenProvider _tokenProvider;
@@ -31,6 +31,7 @@ namespace ProjectPad.Business
         private static void _tokenProvider_TokenChanged(object sender, EventArgs e)
         {
             _singleton.RefreshGlobals();
+            _singleton.RefreshRecent();
         }
 
         public async void RefreshGlobals()
@@ -41,11 +42,38 @@ namespace ProjectPad.Business
                 HasToken = newHasToken;
                 OnPropertyChanged("HasToken");
             }
+
+            if(Me==null)
+            {
+                var tmp = await GraphApiHelper.GetMe();
+                Me = new UserData()
+                {
+                    ConnectionType = "GraphApi",
+                    Image = tmp.ImageData,
+                    Name = tmp.displayName
+                };
+                OnPropertyChanged("Me");
+            }
         }
+
+        public async void RefreshRecent()
+        {
+            if (RecentProjects.Count == 0)
+            {
+                RecentProjects.Add(new RecentProject() { Name = "Project 1", LastChange = DateTime.Now.AddDays(-1) });
+                RecentProjects.Add(new RecentProject() { Name = "Project 2", LastChange = DateTime.Now.AddDays(-2) });
+            }
+
+            OnPropertyChanged("RecentProjects");
+        }
+
+        public List<RecentProject> RecentProjects { get; set; }
 
         public static ProjectPadApplication Instance { get { return _singleton; } }
 
         public bool HasToken { get; private set; }
+
+        public UserData Me { get; private set; }
 
         public void TryConnect()
         {
@@ -56,5 +84,23 @@ namespace ProjectPad.Business
         {
             _tokenProvider.ClearAllTokens();
         }
+
+        
+
     }
+
+    public class RecentProject
+    {
+        public string Name { get; set; }
+        public string Kind { get; set; }
+        public DateTime LastChange { get; set; }
+    }
+
+    public class UserData
+    {
+        public string Name { get; set; }
+        public string ConnectionType { get; set; }
+        public byte[] Image { get; set; }
+    }
+
 }

@@ -35,11 +35,13 @@ namespace ProjectPadUWP
 
             this.DataContext = ProjectPad.Business.ProjectPadApplication.Instance;
 
+
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
             AppTitleBar.Height = sender.Height;
+            viewConnecte.Margin = new Thickness(0, sender.Height, 0, 0);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -68,6 +70,9 @@ namespace ProjectPadUWP
             {
 
             }
+
+            ProjectPad.Business.ProjectPadApplication.Instance.RefreshRecent();
+
         }
 
 
