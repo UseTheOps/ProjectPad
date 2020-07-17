@@ -5,6 +5,7 @@
     xmlns:local="using:ProjectPadUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -42,6 +43,17 @@
             </CommandBar>
         </Grid>
 
+        <muxc:NavigationView x:Name="nvMainPage" Grid.Row="2" 
+                             IsBackButtonVisible="Collapsed"
+                             SelectionChanged="nvMainPage_SelectionChanged"
+                             IsSettingsVisible="False"
+                             PaneDisplayMode="Top" SelectionFollowsFocus="Enabled">
 
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Content="Details" Tag="Main" />
+                <muxc:NavigationViewItem Content="Associated Work Items" Tag="WIT" />
+            </muxc:NavigationView.MenuItems>
+            <Frame x:Name="contentFrame"/>
+        </muxc:NavigationView>
     </Grid>
 </Page>

@@ -6,7 +6,9 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,25 +32,89 @@ namespace ProjectPadUWP
             this.InitializeComponent();
         }
 
+        public object NavigationViewPanePosition { get; private set; }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            var coreApp = CoreApplication.GetCurrentView();
+            var coreTitleBar = coreApp.TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+            
             // Set XAML element as a draggable region.
             Window.Current.SetTitleBar(AppTitleBar);
 
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            var app = ApplicationView.GetForCurrentView();
+            var titleBar = app.TitleBar;
             Color c = new Color() { R = 0x12, G = 0x58, B = 0x87 };
             titleBar.ButtonForegroundColor = Windows.UI.Colors.White;
             titleBar.ButtonBackgroundColor = c;
+
+            Type pageType = typeof(Views.MainView);
+            FrameNavigationOptions navOptions = new FrameNavigationOptions();
+            navOptions.IsNavigationStackEnabled = false;
+            contentFrame.NavigateToType(pageType, null, navOptions);
+            nvMainPage.SelectedItem = nvMainPage.MenuItems[0];
+
+            KeyboardAccelerator GoBack = new KeyboardAccelerator();
+            GoBack.Key = VirtualKey.GoBack;
+            GoBack.Invoked += GoBack_Invoked;
+            SystemNavigationManager.GetForCurrentView().BackRequested += ProjectPage_BackRequested;
+        }
+
+        private void ProjectPage_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = true;
+            GoBack();
+        }
+
+        private void GoBack_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            args.Handled = true;
+            GoBack();
+        }
+
+        private void GoBack()
+        {
+            if (this.Frame.CanGoBack)
+                this.Frame.GoBack();
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
             AppTitleBar.Height = sender.Height;
         }
+
+        private void nvMainPage_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
+        {
+            FrameNavigationOptions navOptions = new FrameNavigationOptions();
+            navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
+            navOptions.IsNavigationStackEnabled = false;
+
+            var item = args.SelectedItem as Microsoft.UI.Xaml.Controls.NavigationViewItem;
+            if (item == null)
+                return;
+
+            Type pageType = null;
+            switch(item.Tag.ToString().ToLowerInvariant())
+            {
+                case "main":
+                    pageType = typeof(Views.MainView);
+                    break;
+                case "wit":
+                    pageType = typeof(Views.CompactWorkItemView);
+                    break;
+                default:
+                    return;
+            }
+
+            if (contentFrame.Content != null && contentFrame.Content.GetType().Equals(pageType))
+                return;
+
+            contentFrame.NavigateToType(pageType, null, navOptions);
+        }
+        
     }
 }
