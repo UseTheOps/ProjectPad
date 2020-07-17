@@ -14,7 +14,14 @@ namespace ProjectPadUWP
         public async Task CreateFolder(string folderName)
         {
             var st = ApplicationData.Current.LocalFolder;
-            var file = await st.CreateFolderAsync(folderName);
+            try
+            {
+                var folder = await st.GetFolderAsync(folderName);
+            }
+            catch (FileNotFoundException)
+            {
+                var file = await st.CreateFolderAsync(folderName);
+            }
         }
 
         public Task<string> GetSetting(string name, bool shouldRoam)

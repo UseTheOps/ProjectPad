@@ -33,7 +33,7 @@
             <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="white" 
                Margin="44,0,0,0" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="12"><Span FontWeight="Black" >PROJECT</Span> PAD</TextBlock>
 
-            <TextBlock Grid.Column="2" Text="{x:Bind CurrentProject.MetaData.Name}" Foreground="white"  />
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind CurrentProject.MetaData.Name}" Foreground="white"  />
         </Grid>
 
         <Grid Grid.Row="1" Background="#125887">
