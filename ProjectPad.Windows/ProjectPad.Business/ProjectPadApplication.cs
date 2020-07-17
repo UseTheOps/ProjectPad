@@ -15,7 +15,7 @@ namespace ProjectPad.Business
             RecentProjects = new List<RecentProject>();
         }
 
-        internal static ITokenProvider _tokenProvider;
+        internal static ITokenProvider _graphApiTokenProvider;
         internal static ISettingsManager _settingsMgr;
 
         private static ProjectPadApplication _singleton;
@@ -23,8 +23,8 @@ namespace ProjectPad.Business
         public static ProjectPadApplication Create(ITokenProvider tokenProvider, ISettingsManager settingsMgr)
         {
             _singleton = new ProjectPadApplication();
-            _tokenProvider = tokenProvider;
-            _tokenProvider.TokenChanged += _tokenProvider_TokenChanged;
+            _graphApiTokenProvider = tokenProvider;
+            _graphApiTokenProvider.TokenChanged += _tokenProvider_TokenChanged;
             _settingsMgr = settingsMgr;
             return _singleton;
         }
@@ -37,7 +37,7 @@ namespace ProjectPad.Business
 
         public async void RefreshGlobals()
         {
-            bool newHasToken = await _tokenProvider.HasSilentGraphApiToken();
+            bool newHasToken = await _graphApiTokenProvider.HasSilentToken();
             if (newHasToken != HasToken)
             {
                 HasToken = newHasToken;
@@ -78,12 +78,12 @@ namespace ProjectPad.Business
 
         public void TryConnect()
         {
-            _tokenProvider.GetGraphApiToken();
+            _graphApiTokenProvider.GetToken();
         }
 
         public void ClearConnections()
         {
-            _tokenProvider.ClearAllTokens();
+            _graphApiTokenProvider.ClearToken();
         }
 
         public async Task<ProjectViewModel> GetProject(string id)

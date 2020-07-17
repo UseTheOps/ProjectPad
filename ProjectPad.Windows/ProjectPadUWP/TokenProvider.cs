@@ -59,7 +59,7 @@ namespace ProjectPadUWP
                     .Build();
         }
 
-        public async Task<string> GetGraphApiToken()
+        public async Task<string> GetToken()
         {
             try
             {
@@ -99,7 +99,7 @@ namespace ProjectPadUWP
             return null;
         }
 
-        public async Task<bool> HasSilentGraphApiToken()
+        public async Task<bool> HasSilentToken()
         {
             try
             {
@@ -122,7 +122,7 @@ namespace ProjectPadUWP
             }
         }
 
-        public async Task ClearAllTokens()
+        public async Task ClearToken()
         {
             var accounts = await PublicClientApp.GetAccountsAsync();
             if (accounts != null && accounts.Count() > 0)

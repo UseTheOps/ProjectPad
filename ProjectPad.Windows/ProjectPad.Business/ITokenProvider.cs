@@ -7,10 +7,10 @@ namespace ProjectPad.Business
 {
     public interface ITokenProvider
     {
-        Task<bool> HasSilentGraphApiToken();
-        Task<string> GetGraphApiToken();
+        Task<bool> HasSilentToken();
+        Task<string> GetToken();
 
-        Task ClearAllTokens();
+        Task ClearToken();
 
         event EventHandler TokenChanged;
     }

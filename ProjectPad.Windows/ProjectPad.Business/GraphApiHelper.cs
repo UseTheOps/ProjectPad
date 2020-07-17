@@ -35,7 +35,7 @@ namespace ProjectPad.Business
 
         public static async Task<GetUserResponse> GetMe()
         {
-            var token = await ProjectPadApplication._tokenProvider.GetGraphApiToken();   
+            var token = await ProjectPadApplication._graphApiTokenProvider.GetToken();   
 
 
             using(HttpClient cli = new HttpClient())
