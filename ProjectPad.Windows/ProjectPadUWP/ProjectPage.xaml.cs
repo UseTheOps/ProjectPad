@@ -33,7 +33,7 @@ namespace ProjectPadUWP
             this.InitializeComponent();
             CurrentProject = new ProjectViewModel()
             {
-                MetaData = new ProjectViewModel.ProjectData()
+                MetaData = new ProjectViewModel.ProjectMetaData()
                 {
                     Id = "--new--",
                     Name = "New"
@@ -138,8 +138,9 @@ namespace ProjectPadUWP
             contentFrame.NavigateToType(pageType, null, navOptions);
         }
 
-        private void btnClosePage_Click(object sender, RoutedEventArgs e)
+        private async void btnClosePage_Click(object sender, RoutedEventArgs e)
         {
+            await this.CurrentProject.Save();
             this.Frame.Navigate(typeof(MainPage));
         }
     }

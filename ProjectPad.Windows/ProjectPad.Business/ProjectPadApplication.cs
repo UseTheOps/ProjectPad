@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectPad.Business
@@ -29,10 +30,10 @@ namespace ProjectPad.Business
             return _singleton;
         }
 
-        private static void _tokenProvider_TokenChanged(object sender, EventArgs e)
+        private async static void _tokenProvider_TokenChanged(object sender, EventArgs e)
         {
             _singleton.RefreshGlobals();
-            _singleton.RefreshRecent();
+            await _singleton.RefreshRecent();
         }
 
         public async void RefreshGlobals()
@@ -59,10 +60,19 @@ namespace ProjectPad.Business
 
         public async Task RefreshRecent()
         {
+
             if (RecentProjects.Count == 0)
             {
-                RecentProjects.Add(new RecentProject() { Id = "project1", Name = "Project 1", LastChange = DateTime.Now.AddDays(-1) }); ;
-                RecentProjects.Add(new RecentProject() { Id = "project2", Name = "Project 2", LastChange = DateTime.Now.AddDays(-2) });
+                var tmp = await _settingsMgr.GetSetting("recent_projects", true);
+                if (tmp != null)
+                {
+                    RecentProjects = JsonConvert.DeserializeObject<List<RecentProject>>(tmp);
+                }
+                else // pour les tests pour l'instant
+                {
+                    RecentProjects.Add(new RecentProject() { Id = "project1", Name = "Project 1", LastChange = DateTime.Now.AddDays(-1) }); ;
+                    RecentProjects.Add(new RecentProject() { Id = "project2", Name = "Project 2", LastChange = DateTime.Now.AddDays(-2) });
+                }
             }
 
             OnPropertyChanged("RecentProjects");
@@ -86,14 +96,30 @@ namespace ProjectPad.Business
             _graphApiTokenProvider.ClearToken();
         }
 
-        public async Task<ProjectViewModel> GetProject(string id)
+        public async Task<ProjectViewModel> OpenProject(string id)
         {
-            return await ProjectViewModel.Get(id);
+            var project = await ProjectViewModel.Get(id);
+            await AddToRecentList(project);
+            return project;
         }
 
-        public async Task<ProjectViewModel> GetProject(RecentProject t)
+        public async Task<ProjectViewModel> OpenProject(RecentProject t)
         {
-            return await ProjectViewModel.Get(t.Id);
+            var project = await ProjectViewModel.Get(t.Id);
+            await AddToRecentList(project);
+            return project;
+        }
+
+        internal async Task AddToRecentList(ProjectViewModel project)
+        {
+            var lst = (from z in RecentProjects
+                       where !z.Id.Equals(project.MetaData.Id, StringComparison.InvariantCultureIgnoreCase)
+                       select z).ToList();
+            lst.Insert(0, RecentProject.From(project, DateTime.Now));
+            RecentProjects = lst;
+            OnPropertyChanged("RecentProjects");
+            var json = JsonConvert.SerializeObject(lst);
+            await _settingsMgr.SetSettings("recent_projects", json, true);
         }
     }
 
@@ -103,6 +129,18 @@ namespace ProjectPad.Business
         public string Name { get; set; }
         public string Kind { get; set; }
         public DateTime LastChange { get; set; }
+
+        internal static RecentProject From(ProjectViewModel project, DateTime lastChange)
+        {
+            var t = new RecentProject()
+            {
+                Id = project.MetaData.Id,
+                LastChange = lastChange,
+                Kind = "",
+                Name = project.MetaData.Name
+            };
+            return t;
+        }
     }
 
     public class UserData

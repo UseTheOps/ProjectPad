@@ -121,7 +121,7 @@ namespace ProjectPadUWP
             var t = (sender as FrameworkElement).Tag;
             if(t!=null)
             {
-                var prj = await ProjectPadApplication.Instance.GetProject(t as string);
+                var prj = await ProjectPadApplication.Instance.OpenProject(t as string);
                 this.Frame.Navigate(typeof(ProjectPage), prj);
 
             }
