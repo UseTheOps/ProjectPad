@@ -24,6 +24,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
                 <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
             </Grid.ColumnDefinitions>
             <Image Source="Assets/White-Square44x44Logo.png" 
@@ -31,9 +32,15 @@
            Width="28" Height="28" Margin="12,0"/>
             <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="white" 
                Margin="44,0,0,0" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="12"><Span FontWeight="Black" >PROJECT</Span> PAD</TextBlock>
+
+            <TextBlock Grid.Column="2" Text="{x:Bind CurrentProject.MetaData.Name}" Foreground="white"  />
         </Grid>
 
         <Grid Grid.Row="1" Background="#125887">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
             <CommandBar  Background="Transparent" HorizontalAlignment="Left" Foreground="#efefef" Margin="6,0,0,0"
                     ClosedDisplayMode="Compact"
                     IsOpen="False" OverflowButtonVisibility="Collapsed" IsDynamicOverflowEnabled="True" DefaultLabelPosition="Right" >
@@ -41,6 +48,8 @@
                     <AppBarButton Icon="Add" Label="Add" IsCompact="True" Foreground="#efefef" />
                 </CommandBar.PrimaryCommands>
             </CommandBar>
+            <AppBarButton Grid.Column="1" x:Name="btnClosePage" Click="btnClosePage_Click" Icon="Cancel" LabelPosition="Collapsed" IsCompact="True" Foreground="#efefef" />
+
         </Grid>
 
         <muxc:NavigationView x:Name="nvMainPage" Grid.Row="2" 

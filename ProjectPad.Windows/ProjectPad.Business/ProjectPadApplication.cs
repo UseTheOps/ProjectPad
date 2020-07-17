@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProjectPad.Business
 {
@@ -56,12 +57,12 @@ namespace ProjectPad.Business
             }
         }
 
-        public async void RefreshRecent()
+        public async Task RefreshRecent()
         {
             if (RecentProjects.Count == 0)
             {
-                RecentProjects.Add(new RecentProject() { Name = "Project 1", LastChange = DateTime.Now.AddDays(-1) });
-                RecentProjects.Add(new RecentProject() { Name = "Project 2", LastChange = DateTime.Now.AddDays(-2) });
+                RecentProjects.Add(new RecentProject() { Id = "project1", Name = "Project 1", LastChange = DateTime.Now.AddDays(-1) }); ;
+                RecentProjects.Add(new RecentProject() { Id = "project2", Name = "Project 2", LastChange = DateTime.Now.AddDays(-2) });
             }
 
             OnPropertyChanged("RecentProjects");
@@ -85,12 +86,20 @@ namespace ProjectPad.Business
             _tokenProvider.ClearAllTokens();
         }
 
-        
+        public async Task<ProjectViewModel> GetProject(string id)
+        {
+            return await ProjectViewModel.Get(id);
+        }
 
+        public async Task<ProjectViewModel> GetProject(RecentProject t)
+        {
+            return await ProjectViewModel.Get(t.Id);
+        }
     }
 
     public class RecentProject
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Kind { get; set; }
         public DateTime LastChange { get; set; }

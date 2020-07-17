@@ -45,21 +45,25 @@ namespace ProjectPadUWP
             viewConnecte.Margin = new Thickness(0, sender.Height, 0, 0);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
 
+            // changing title bar to custom
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-            // Set XAML element as a draggable region.
             Window.Current.SetTitleBar(AppTitleBar);
 
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
             titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
             titleBar.ButtonBackgroundColor = c;
+
+            // disabling back button
+            var frame = this.Frame;
+            frame.BackStack.Clear();
 
             var t = ProjectPad.Business.ProjectPadApplication.Instance.HasToken;
             if (!t)
@@ -72,7 +76,9 @@ namespace ProjectPadUWP
 
             }
 
-            ProjectPad.Business.ProjectPadApplication.Instance.RefreshRecent();
+            // refreshing data
+            await ProjectPad.Business.ProjectPadApplication.Instance.RefreshRecent();
+
 
         }
 
@@ -101,15 +107,29 @@ namespace ProjectPadUWP
             ProjectPad.Business.ProjectPadApplication.Instance.ClearConnections();
         }
 
-        private void btnTest_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ProjectPage));
-        }
+       
 
         private void SwipeItem_Invoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
         {
-            var t = args.SwipeControl.DataContext;
-            lblTmp.Text = (t as RecentProject)?.Name;
+            var t = args.SwipeControl.Tag;
+            lblTmp.Text = t as string;
+        }
+
+        private async void btnOpenProject_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var t = (sender as FrameworkElement).Tag;
+            if(t!=null)
+            {
+                var prj = await ProjectPadApplication.Instance.GetProject(t as string);
+                this.Frame.Navigate(typeof(ProjectPage), prj);
+
+            }
+        }
+
+        private void bntSettings_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SettingsPage));
         }
     }
 }

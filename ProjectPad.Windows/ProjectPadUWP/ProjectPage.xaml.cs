@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectPad.Business;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,13 +31,31 @@ namespace ProjectPadUWP
         public ProjectPage()
         {
             this.InitializeComponent();
+            CurrentProject = new ProjectViewModel()
+            {
+                MetaData = new ProjectViewModel.ProjectData()
+                {
+                    Id = "--new--",
+                    Name = "New"
+                }
+            };
         }
+
+        public ProjectViewModel CurrentProject { get; set; }
 
         public object NavigationViewPanePosition { get; private set; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            if(e.Parameter !=null && e.Parameter is ProjectViewModel)
+            {
+                var prj = e.Parameter as ProjectViewModel;
+                this.DataContext = prj;
+                this.CurrentProject = prj;
+                Bindings.Update();
+            }
 
             var coreApp = CoreApplication.GetCurrentView();
             var coreTitleBar = coreApp.TitleBar;
@@ -47,6 +66,9 @@ namespace ProjectPadUWP
             Window.Current.SetTitleBar(AppTitleBar);
 
             var app = ApplicationView.GetForCurrentView();
+            app.Title = this.CurrentProject?.MetaData.Name + "-";
+
+
             var titleBar = app.TitleBar;
             Color c = new Color() { R = 0x12, G = 0x58, B = 0x87 };
             titleBar.ButtonForegroundColor = Windows.UI.Colors.White;
@@ -115,6 +137,10 @@ namespace ProjectPadUWP
 
             contentFrame.NavigateToType(pageType, null, navOptions);
         }
-        
+
+        private void btnClosePage_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 }

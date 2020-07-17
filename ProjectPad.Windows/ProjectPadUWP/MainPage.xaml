@@ -12,13 +12,13 @@
     <Page.Resources>
 
         <DataTemplate x:DataType="business:RecentProject" x:Key="RecentProject">
-            <SwipeControl BorderThickness="1">
+            <SwipeControl BorderThickness="1" Tag="{x:Bind Id}">
                 <SwipeControl.LeftItems>
                     <SwipeItems>
                         <SwipeItem Text="test" Invoked="SwipeItem_Invoked" />
                     </SwipeItems>
                 </SwipeControl.LeftItems>
-                <Button BorderThickness="0" BorderBrush="{x:Null}" Background="Transparent">
+                <Button BorderThickness="0" BorderBrush="{x:Null}" Tag="{x:Bind Id}" Background="Transparent" x:Name="btnOpenProject" Click="btnOpenProject_Click">
                     <Grid Margin="0,10,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
@@ -55,10 +55,18 @@
         <local:ByteToImageSourceConverter x:Key="ByteToImage" />
 
         <DataTemplate x:Key="MeTemplate" x:DataType="business:UserData">
-            <StackPanel Orientation="Horizontal">
-                <muxc:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind Image, Mode=OneWay, Converter={StaticResource ByteToImage}}" Height="48" />
-                <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
-            </StackPanel>
+            <Button BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" x:Name="bntSettings" Click="bntSettings_Click">
+                <StackPanel Orientation="Horizontal">
+                    <muxc:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind Image, Mode=OneWay, Converter={StaticResource ByteToImage}}" Height="48" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay, FallbackValue='-Non connecté'}" />
+                        <StackPanel Opacity="0.6" Orientation="Horizontal" VerticalAlignment="Center">
+                            <SymbolIcon Symbol="Setting" Margin="0,0,4,0" />
+                            <TextBlock Text="parametres" VerticalAlignment="Center" FontSize="10" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
         </DataTemplate>
 
 
