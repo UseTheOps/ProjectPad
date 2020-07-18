@@ -111,8 +111,7 @@ namespace ProjectPadUWP
 
         private void SwipeItem_Invoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
         {
-            var t = args.SwipeControl.Tag;
-            lblTmp.Text = t as string;
+          
         }
 
         private async void btnOpenProject_Click(object sender, RoutedEventArgs e)

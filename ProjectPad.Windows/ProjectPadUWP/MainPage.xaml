@@ -18,7 +18,9 @@
                         <SwipeItem Text="test" Invoked="SwipeItem_Invoked" />
                     </SwipeItems>
                 </SwipeControl.LeftItems>
-                <Button BorderThickness="0" BorderBrush="{x:Null}" Tag="{x:Bind Id}" Background="Transparent" x:Name="btnOpenProject" Click="btnOpenProject_Click">
+                <Button BorderThickness="0" BorderBrush="{x:Null}" Tag="{x:Bind Id}"
+                        AutomationProperties.Name="{x:Bind local:LocalizationHelper.FormatRecentProject(Name, LastChange)}"
+                        Background="Transparent" x:Name="btnOpenProject" Click="btnOpenProject_Click">
                     <Grid Margin="0,10,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
@@ -54,20 +56,6 @@
 
         <local:ByteToImageSourceConverter x:Key="ByteToImage" />
 
-        <DataTemplate x:Key="MeTemplate" x:DataType="business:UserData">
-            <Button BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" x:Name="bntSettings" Click="bntSettings_Click">
-                <StackPanel Orientation="Horizontal">
-                    <muxc:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind Image, Mode=OneWay, Converter={StaticResource ByteToImage}}" Height="48" />
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="{x:Bind Name, Mode=OneWay, FallbackValue='-Non connecté'}" />
-                        <StackPanel Opacity="0.6" Orientation="Horizontal" VerticalAlignment="Center">
-                            <SymbolIcon Symbol="Setting" Margin="0,0,4,0" />
-                            <TextBlock Text="parametres" VerticalAlignment="Center" FontSize="10" />
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
-        </DataTemplate>
 
 
     </Page.Resources>
@@ -120,11 +108,7 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="viewConnecte" Visibility="{x:Bind Mode=OneWay, Path=ToVisible(DataObject.HasToken)}" Background="{StaticResource TheBackground}">
-
-            <ContentPresenter Content="{x:Bind DataObject.Me, Mode=OneWay}" ContentTemplate="{StaticResource MeTemplate}" VerticalAlignment="Top" Margin="40" HorizontalAlignment="Right" />
-
-            <TextBlock x:Name="lblTmp" Margin="80" Text="-" />
-
+          
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,4">
                 <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" MaxWidth="24" Margin="0,0,0,0"  />
                 <StackPanel VerticalAlignment="Center" Margin="10,0,10,0">
@@ -135,14 +119,23 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="65,0,65,0">
                 <Grid>
                     <TextBlock FontWeight="Thin" Text="accueil" FontSize="72" Opacity="0.03" VerticalAlignment="Bottom" Margin="-15,0,50,0" />
-                    <TextBlock FontWeight="Thin" Text="accueil" FontSize="36" Opacity="1" VerticalAlignment="Bottom" Margin="-5,0,50,10" />
+                    <TextBlock FontWeight="Thin" Text="accueil" 
+                               AutomationProperties.Name="Accueil"
+                               AutomationProperties.HeadingLevel="Level1"
+                               FontSize="36" Opacity="1" VerticalAlignment="Bottom" Margin="-5,0,50,10" />
                 </Grid>
 
 
 
-                <TextBlock Text="PROJETS RÉCENTS" FontWeight="Thin" Foreground="#696969" Margin="0,0,0,10" />
+                <TextBlock x:Name="lblListeProjets"
+                           AutomationProperties.Name="Projets récents"
+                           AutomationProperties.HeadingLevel="Level2"
+                           Text="PROJETS RÉCENTS" FontWeight="Thin" Foreground="#696969" Margin="0,0,0,10" />
 
-                <muxc:ItemsRepeater ItemsSource="{Binding RecentProjects}" ItemTemplate="{StaticResource RecentProject}">
+                <muxc:ItemsRepeater
+                    AutomationProperties.AccessibilityView="Content"
+                    AutomationProperties.LabeledBy="{x:Bind lblListeProjets}"
+                    ItemsSource="{Binding RecentProjects}" ItemTemplate="{StaticResource RecentProject}">
 
                 </muxc:ItemsRepeater>
 
@@ -181,12 +174,28 @@
 
 
             </StackPanel>
+
+            <Button BorderBrush="{x:Null}" BorderThickness="0"
+                    VerticalAlignment="Top" Margin="40" HorizontalAlignment="Right"
+                    x:Uid="MainPage_UserButton"
+                    AutomationProperties.Name="{x:Bind local:LocalizationHelper.FormatNameForSettings(DataObject.Me.Name), Mode=OneWay}"
+                    Background="Transparent" x:Name="bntSettings" Click="bntSettings_Click">
+                <StackPanel Orientation="Horizontal">
+                    <muxc:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind DataObject.Me.Image, Mode=OneWay, Converter={StaticResource ByteToImage}}" Height="48" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{x:Bind DataObject.Me.Name, Mode=OneWay, FallbackValue='-Non connecté'}" />
+                        <StackPanel Opacity="0.6" Orientation="Horizontal" VerticalAlignment="Center">
+                            <SymbolIcon Symbol="Setting" Margin="0,0,4,0" />
+                            <TextBlock Text="parametres" VerticalAlignment="Center" FontSize="10" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
+
         </Grid>
 
         <Grid x:Name="AppTitleBar" Background="Transparent" VerticalAlignment="Top" d:IsLocked="True">
-            <!-- Width of the padding columns is set in LayoutMetricsChanged handler. -->
-            <!-- Using padding columns instead of Margin ensures that the background
-         paints the area under the caption control buttons (for transparent buttons). -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
                 <ColumnDefinition/>
