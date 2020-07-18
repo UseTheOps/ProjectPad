@@ -9,7 +9,22 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Button x:Name="btnDeconnexion" Click="btnDeconnexion_Click">Deconnexion</Button>
+        <StackPanel>
 
+            <AppBarButton x:Name="btnBack"
+                          IsCompact="True" LabelPosition="Collapsed"
+                          Icon="Back"
+                          Click="btnBack_Click"
+                         />
+            <Border x:Name="brdCultureChanged" Visibility="Collapsed">
+                <TextBlock x:Name="txtCultureChanged">Culture modifiée, veuillez relancer l'application</TextBlock>
+                
+            </Border>
+            <Button x:Name="btnDeconnexion"
+                    x:Uid="Button_Settings_Disconnect"
+                    Click="btnDeconnexion_Click">Deconnexion</Button>
+            <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged">
+            </ComboBox>
+        </StackPanel>
     </Grid>
 </Page>

@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Button_Home_MoreProjects.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>See more projects</value>
+  </data>
+  <data name="Button_Home_MoreProjects_Label.Text" xml:space="preserve">
+    <value>more projects</value>
+  </data>
+  <data name="Button_Settings_Disconnect.Content" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
   <data name="Button_Signin_Microsoft.Text" xml:space="preserve">
     <value>Sign-in</value>
+  </data>
+  <data name="Label_Home.Text" xml:space="preserve">
+    <value>home</value>
+  </data>
+  <data name="Label_Home.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>home</value>
+  </data>
+  <data name="Text_CultureFromSystem" xml:space="preserve">
+    <value>Use OS culture if available</value>
   </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -40,9 +41,18 @@ namespace ProjectPadUWP
         /// seront utilisés par exemple au moment du lancement de l'application pour l'ouverture d'un fichier spécifique.
         /// </summary>
         /// <param name="e">Détails concernant la requête et le processus de lancement.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+
+            SettingsManager sett = new SettingsManager();
+            var lang = await sett.GetSetting("chosen_culture", true);
+            if(!string.IsNullOrEmpty(lang))
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+            }
+
 
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
@@ -78,7 +88,7 @@ namespace ProjectPadUWP
                 Window.Current.Content = rootFrame;
             }
 
-            ProjectPad.Business.ProjectPadApplication.Create(new TokenProvider(), new SettingsManager());
+            ProjectPad.Business.ProjectPadApplication.Create(new TokenProvider(), sett);
             ProjectPad.Business.ProjectPadApplication.Instance.RefreshGlobals();
 
             if (e.PrelaunchActivated == false)

@@ -118,8 +118,11 @@
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="65,0,65,0">
                 <Grid>
-                    <TextBlock FontWeight="Thin" Text="accueil" FontSize="72" Opacity="0.03" VerticalAlignment="Bottom" Margin="-15,0,50,0" />
+                    <TextBlock FontWeight="Thin" 
+                               x:Uid="Label_Home"
+                               Text="accueil" FontSize="72" Opacity="0.03" VerticalAlignment="Bottom" Margin="-15,0,50,0" />
                     <TextBlock FontWeight="Thin" Text="accueil" 
+                               x:Uid="Label_Home"
                                AutomationProperties.Name="Accueil"
                                AutomationProperties.HeadingLevel="Level1"
                                FontSize="36" Opacity="1" VerticalAlignment="Bottom" Margin="-5,0,50,10" />
@@ -141,13 +144,12 @@
                 </muxc:ItemsRepeater>
 
                 <Button Style="{ThemeResource ButtonRevealStyle}"
-                        x:Uid="btnMoreProjects"
-                        AutomationProperties.Name="Voir plus de projets"
+                        x:Uid="Button_Home_MoreProjects"
                         IsEnabled="{x:Bind HasMoreProjects(DataObject.RecentProjects.Count)}"
                         Background="Transparent">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="More" Margin="0,0,6,0" />
-                        <TextBlock>Plus de projets</TextBlock>
+                        <TextBlock x:Uid="Button_Home_MoreProjects_Label">+ de projets</TextBlock>
                     </StackPanel>
                 </Button>
 

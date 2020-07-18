@@ -58,6 +58,16 @@ namespace ProjectPad.Business
             }
         }
 
+        public async Task<string> GetPreferredCulture()
+        {
+            return await _settingsMgr.GetSetting("chosen_culture", true);
+        }
+        public async Task SetPreferredCulture(string language)
+        {
+            await _settingsMgr.SetSettings("chosen_culture", language, true); ;
+        }
+
+
         public async Task RefreshRecent()
         {
 
