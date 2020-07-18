@@ -130,5 +130,10 @@ namespace ProjectPadUWP
         {
             this.Frame.Navigate(typeof(SettingsPage));
         }
+
+        public bool HasMoreProjects(int? count)
+        {
+            return count.GetValueOrDefault(0) > 3;
+        }
     }
 }

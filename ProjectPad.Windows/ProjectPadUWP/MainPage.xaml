@@ -133,13 +133,18 @@
                            Text="PROJETS RÉCENTS" FontWeight="Thin" Foreground="#696969" Margin="0,0,0,10" />
 
                 <muxc:ItemsRepeater
+                    AutomationProperties.SizeOfSet="{x:Bind DataObject.RecentProjects.Count, FallbackValue=0}"
                     AutomationProperties.AccessibilityView="Content"
                     AutomationProperties.LabeledBy="{x:Bind lblListeProjets}"
                     ItemsSource="{Binding RecentProjects}" ItemTemplate="{StaticResource RecentProject}">
 
                 </muxc:ItemsRepeater>
 
-                <Button Style="{ThemeResource ButtonRevealStyle}" Background="Transparent">
+                <Button Style="{ThemeResource ButtonRevealStyle}"
+                        x:Uid="btnMoreProjects"
+                        AutomationProperties.Name="Voir plus de projets"
+                        IsEnabled="{x:Bind HasMoreProjects(DataObject.RecentProjects.Count)}"
+                        Background="Transparent">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="More" Margin="0,0,6,0" />
                         <TextBlock>Plus de projets</TextBlock>
