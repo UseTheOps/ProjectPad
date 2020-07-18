@@ -110,13 +110,30 @@ namespace ProjectPad.Business
         {
             var project = await ProjectViewModel.Get(id);
             await AddToRecentList(project);
+            OnProjectOpened(project);
             return project;
+        }
+
+
+        public class ProjectOpenedEventArgs : EventArgs
+        {
+            public ProjectViewModel Project { get; set; }
+        }
+
+        public static event EventHandler<ProjectOpenedEventArgs> ProjectOpened;
+        internal static void OnProjectOpened(ProjectViewModel project)
+        {
+            ProjectOpened?.Invoke(typeof(ProjectPadApplication), new ProjectOpenedEventArgs()
+            {
+                Project = project
+            });
         }
 
         public async Task<ProjectViewModel> OpenProject(RecentProject t)
         {
             var project = await ProjectViewModel.Get(t.Id);
             await AddToRecentList(project);
+            OnProjectOpened(project);
             return project;
         }
 

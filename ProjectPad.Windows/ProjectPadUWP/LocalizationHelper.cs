@@ -24,5 +24,10 @@ namespace ProjectPadUWP
         {
             return string.Format("{0}, dernier accès le {1:dd MMM HH:mm}", name, lastChange);
         }
+
+        internal static string FormatActivityForProject(ProjectPad.Business.ProjectViewModel prj)
+        {
+            return string.Format("Edition du projet {0}",  prj.MetaData.Name);
+        }
     }
 }

@@ -7,9 +7,11 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.UserActivities;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -36,6 +38,16 @@ namespace ProjectPadUWP
             this.Suspending += OnSuspending;
         }
 
+        protected async override void OnActivated(IActivatedEventArgs e)
+        {
+            if (e.Kind == ActivationKind.Protocol)
+            {
+                var dialog = new MessageDialog("App Activated by Protocol.");
+                await dialog.ShowAsync();
+            }
+            Window.Current.Activate();
+        }
+
         /// <summary>
         /// Invoqué lorsque l'application est lancée normalement par l'utilisateur final.  D'autres points d'entrée
         /// seront utilisés par exemple au moment du lancement de l'application pour l'ouverture d'un fichier spécifique.
@@ -47,12 +59,11 @@ namespace ProjectPadUWP
 
             SettingsManager sett = new SettingsManager();
             var lang = await sett.GetSetting("chosen_culture", true);
-            if(!string.IsNullOrEmpty(lang))
+            if (!string.IsNullOrEmpty(lang))
             {
                 System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
             }
-
 
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;

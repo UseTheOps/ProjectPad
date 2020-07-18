@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.UserActivities;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -28,6 +30,9 @@ namespace ProjectPadUWP
     /// </summary>
     public sealed partial class ProjectPage : Page
     {
+
+        public UserActivitySession _editProjectSession;
+
         public ProjectPage()
         {
             this.InitializeComponent();
@@ -45,7 +50,7 @@ namespace ProjectPadUWP
 
         public object NavigationViewPanePosition { get; private set; }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
@@ -55,6 +60,8 @@ namespace ProjectPadUWP
                 this.DataContext = prj;
                 this.CurrentProject = prj;
                 Bindings.Update();
+                await AddActivity(prj);
+
             }
 
             var coreApp = CoreApplication.GetCurrentView();
@@ -85,6 +92,31 @@ namespace ProjectPadUWP
             GoBack.Invoked += GoBack_Invoked;
             SystemNavigationManager.GetForCurrentView().BackRequested += ProjectPage_BackRequested;
         }
+
+        private async Task AddActivity(ProjectPad.Business.ProjectViewModel project)
+        {
+            var channel = UserActivityChannel.GetDefault();
+            var activity = await channel.GetOrCreateUserActivityAsync("open:" + project.MetaData.Id);
+
+            activity.ActivationUri = new Uri("useopsprjpad://projects/" + project.MetaData.Id);
+            activity.VisualElements.DisplayText = project.MetaData.Name;
+            activity.VisualElements.Description = LocalizationHelper.FormatActivityForProject(project);
+
+            await activity.SaveAsync();
+
+            _editProjectSession = activity.CreateSession();
+        }
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+
+            if (_editProjectSession != null)
+                _editProjectSession.Dispose();
+        }
+
 
         private void ProjectPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
