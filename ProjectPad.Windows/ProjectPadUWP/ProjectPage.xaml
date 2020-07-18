@@ -48,7 +48,6 @@
                     <AppBarButton Icon="Add" Label="Add" IsCompact="True" Foreground="#efefef" />
                 </CommandBar.PrimaryCommands>
             </CommandBar>
-            <AppBarButton Grid.Column="1" x:Name="btnClosePage" Click="btnClosePage_Click" Icon="Cancel" LabelPosition="Collapsed" IsCompact="True" Foreground="#efefef" />
 
         </Grid>
 
@@ -57,7 +56,14 @@
                              SelectionChanged="nvMainPage_SelectionChanged"
                              IsSettingsVisible="False"
                              PaneDisplayMode="Top" SelectionFollowsFocus="Enabled">
-
+            <muxc:NavigationView.PaneHeader>
+                <StackPanel Orientation="Horizontal" x:Name="btnBack">
+                    <AppBarButton Grid.Column="1" x:Name="btnClosePage" x:Uid="btnCloseProjectPage" 
+                                  AutomationProperties.Name="Fermer le projet"
+                                  Click="btnClosePage_Click" Icon="Back" LabelPosition="Collapsed" IsCompact="True" />
+                    <AppBarSeparator />
+                </StackPanel>
+            </muxc:NavigationView.PaneHeader>
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Content="Details" Tag="Main" />
                 <muxc:NavigationViewItem Content="Associated Work Items" Tag="WIT" />
