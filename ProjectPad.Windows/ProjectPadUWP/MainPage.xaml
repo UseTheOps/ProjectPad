@@ -31,7 +31,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Border Background="{ThemeResource SystemAccentColor}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,20,0" />
+                        <Border Background="{ThemeResource SystemAccentColorDark1}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,20,0" />
                         <TextBlock Text="{x:Bind Name}" Grid.Column="1" FontWeight="SemiBold" Grid.Row="0" />
                         <TextBlock Text="{x:Bind LastChange}" Grid.Column="1" Grid.Row="1" Opacity="0.5" />
                     </Grid>
