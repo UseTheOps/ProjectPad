@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -76,10 +77,12 @@ namespace ProjectPadUWP
 
             }
 
-            // refreshing data
-            await ProjectPad.Business.ProjectPadApplication.Instance.RefreshRecent();
-
-
+            if (App.ActivatedProject!=null)
+            {
+                string s = App.ActivatedProject;
+                App.ActivatedProject = null;
+                await OpenProject(s);
+            }
         }
 
 
@@ -116,9 +119,14 @@ namespace ProjectPadUWP
 
         private async void btnOpenProject_Click(object sender, RoutedEventArgs e)
         {
-            
+
             var t = (sender as FrameworkElement).Tag;
-            if(t!=null)
+            await OpenProject(t);
+        }
+
+        private async Task OpenProject(object t)
+        {
+            if (t != null)
             {
                 var prj = await ProjectPadApplication.Instance.OpenProject(t as string);
                 this.Frame.Navigate(typeof(ProjectPage), prj);

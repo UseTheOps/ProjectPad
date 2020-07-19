@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Animation;
+using System.Threading.Tasks;
+using ProjectPad.Business;
 
 // Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -64,9 +66,9 @@ namespace ProjectPadUWP
             RestoreState(loadState);
         }
 
-        private void TEnd_Tick(object sender, object e)
+        private async void TEnd_Tick(object sender, object e)
         {
-            DismissExtendedSplash();
+            await DismissExtendedSplashAsync();
         }
 
         void RestoreState(bool loadState)
@@ -116,14 +118,28 @@ namespace ProjectPadUWP
             // Complete app setup operations here...
         }
 
-        void DismissExtendedSplash()
+        async Task DismissExtendedSplashAsync()
         {
             tEnd.Stop();
             tEnd = null;
             // Place the frame in the current Window
             Window.Current.Content = rootFrame;
-            // Navigate to mainpage
-            rootFrame.Navigate(typeof(MainPage));
+
+            // refreshing data
+            await ProjectPad.Business.ProjectPadApplication.Instance.RefreshRecent();
+
+            if (App.ActivatedProject != null)
+            {
+                string s = App.ActivatedProject;
+                App.ActivatedProject = null;
+                var prj = await ProjectPadApplication.Instance.OpenProject(s);
+                rootFrame.Navigate(typeof(ProjectPage), prj);
+            }
+            else
+            {
+                // Navigate to mainpage
+                rootFrame.Navigate(typeof(MainPage));
+            }
             
         }
 
@@ -133,9 +149,5 @@ namespace ProjectPadUWP
                 .PrepareToAnimate("forwardAnimation", extendedSplashImage);
         }
 
-        void DismissSplashButton_Click(object sender, RoutedEventArgs e)
-        {
-            DismissExtendedSplash();
-        }
     }
 }

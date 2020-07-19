@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -40,13 +41,38 @@ namespace ProjectPadUWP
 
         protected async override void OnActivated(IActivatedEventArgs e)
         {
+
+            Window.Current.Activate();
+
             if (e.Kind == ActivationKind.Protocol)
             {
-                var dialog = new MessageDialog("App Activated by Protocol.");
-                await dialog.ShowAsync();
+                ProtocolActivatedEventArgs eventArgs = e as ProtocolActivatedEventArgs;
+                string name = eventArgs.Uri.AbsolutePath;
+                name = name.Substring(name.LastIndexOf("/") + 1);
+
+                Frame rootFrame = Window.Current.Content as Frame;
+                var app = ProjectPad.Business.ProjectPadApplication.Instance;
+
+                if(rootFrame==null)
+                {
+                    await StartApp(e);
+                    rootFrame = Window.Current.Content as Frame;
+                }
+
+                if (rootFrame != null && app != null && rootFrame.Content != null && !(rootFrame.Content is SplashScreen))
+                {
+                    var prj = await ProjectPad.Business.ProjectPadApplication.Instance.OpenProject(name);
+                    rootFrame.Navigate(typeof(ProjectPage), prj);
+                }
+                else
+                {
+                    ActivatedProject = name;
+                }
             }
-            Window.Current.Activate();
+
         }
+
+        public static string ActivatedProject { get; set; }
 
         /// <summary>
         /// Invoqué lorsque l'application est lancée normalement par l'utilisateur final.  D'autres points d'entrée
@@ -57,50 +83,17 @@ namespace ProjectPadUWP
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
-            SettingsManager sett = new SettingsManager();
-            var lang = await sett.GetSetting("chosen_culture", true);
-            if (!string.IsNullOrEmpty(lang))
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
-            }
-
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
-            titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
-            titleBar.ButtonBackgroundColor = c;
             // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu,
             // assurez-vous juste que la fenêtre est active
             if (rootFrame == null)
             {
-                // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
-                rootFrame = new Frame();
+                rootFrame = await StartApp(e);
+            }
+            else
+            {
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
-
-                //  Display an extended splash screen if app was not previously running.
-                if (e.PreviousExecutionState != ApplicationExecutionState.Running)
-                {
-                    bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                    ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
-                    rootFrame.Content = extendedSplash;
-                    Window.Current.Content = rootFrame;
-                }
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: chargez l'état de l'application précédemment suspendue
-                }
-
-                // Placez le frame dans la fenêtre active
-                Window.Current.Content = rootFrame;
             }
 
-            ProjectPad.Business.ProjectPadApplication.Create(new TokenProvider(), sett);
-            ProjectPad.Business.ProjectPadApplication.Instance.RefreshGlobals();
 
             if (e.PrelaunchActivated == false)
             {
@@ -115,6 +108,53 @@ namespace ProjectPadUWP
                 Window.Current.Activate();
             }
         }
+
+        private async Task<Frame> StartApp(IActivatedEventArgs e)
+        {
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
+            titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
+            titleBar.ButtonBackgroundColor = c;
+
+
+
+            SettingsManager sett = new SettingsManager();
+            var lang = await sett.GetSetting("chosen_culture", true);
+            if (!string.IsNullOrEmpty(lang))
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+            }
+
+
+            // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
+            Frame rootFrame = new Frame();
+            rootFrame.NavigationFailed += OnNavigationFailed;
+
+            bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
+            ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
+            rootFrame.Content = extendedSplash;
+            Window.Current.Content = rootFrame;
+
+            if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+            {
+            }
+
+            // Placez le frame dans la fenêtre active
+            Window.Current.Content = rootFrame;
+
+
+            ProjectPad.Business.ProjectPadApplication.Create(new TokenProvider(), sett);
+            ProjectPad.Business.ProjectPadApplication.Instance.RefreshGlobals();
+
+
+            return rootFrame;
+        }
+
+
 
         /// <summary>
         /// Appelé lorsque la navigation vers une page donnée échoue
