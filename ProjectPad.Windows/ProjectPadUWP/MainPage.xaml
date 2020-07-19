@@ -31,7 +31,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Border Background="#dcdcdc" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,20,0" />
+                        <Border Background="{ThemeResource SystemAccentColor}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="0,0,20,0" />
                         <TextBlock Text="{x:Bind Name}" Grid.Column="1" FontWeight="SemiBold" Grid.Row="0" />
                         <TextBlock Text="{x:Bind LastChange}" Grid.Column="1" Grid.Row="1" Opacity="0.5" />
                     </Grid>
@@ -108,97 +108,95 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="viewConnecte" Visibility="{x:Bind Mode=OneWay, Path=ToVisible(DataObject.HasToken)}" Background="{StaticResource TheBackground}">
-          
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,4">
                 <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" MaxWidth="24" Margin="0,0,0,0"  />
                 <StackPanel VerticalAlignment="Center" Margin="10,0,10,0">
                     <TextBlock HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="18"><Span FontWeight="Black" Foreground="#125887">PROJECT</Span> PAD</TextBlock>
                 </StackPanel>
             </StackPanel>
+            <StackPanel VerticalAlignment="Center" Margin="65,0,65,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel x:Name="pnlProjectList">
+                    <Grid Height="100">
+                        <TextBlock FontWeight="Thin" 
+                            x:Uid="Label_Home"
+                            Text="accueil" FontSize="72" Opacity="0.03" VerticalAlignment="Bottom" Margin="-15,0,50,0" />
+                        <TextBlock FontWeight="Thin" Text="accueil" 
+                            x:Uid="Label_Home"
+                            AutomationProperties.Name="Accueil"
+                            AutomationProperties.HeadingLevel="Level1"
+                            FontSize="36" Opacity="1" VerticalAlignment="Bottom" Margin="-5,0,50,10" />
+                    </Grid>
 
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="65,0,65,0">
-                <Grid>
-                    <TextBlock FontWeight="Thin" 
-                               x:Uid="Label_Home"
-                               Text="accueil" FontSize="72" Opacity="0.03" VerticalAlignment="Bottom" Margin="-15,0,50,0" />
-                    <TextBlock FontWeight="Thin" Text="accueil" 
-                               x:Uid="Label_Home"
-                               AutomationProperties.Name="Accueil"
-                               AutomationProperties.HeadingLevel="Level1"
-                               FontSize="36" Opacity="1" VerticalAlignment="Bottom" Margin="-5,0,50,10" />
-                </Grid>
 
 
+                    <TextBlock x:Name="lblListeProjets"
+                        AutomationProperties.Name="Projets récents"
+                        AutomationProperties.HeadingLevel="Level2"
+                        Text="PROJETS RÉCENTS" FontWeight="Thin" Foreground="#696969" />
 
-                <TextBlock x:Name="lblListeProjets"
-                           AutomationProperties.Name="Projets récents"
-                           AutomationProperties.HeadingLevel="Level2"
-                           Text="PROJETS RÉCENTS" FontWeight="Thin" Foreground="#696969" Margin="0,0,0,10" />
+                    <muxc:ItemsRepeater
+                        AutomationProperties.SizeOfSet="{x:Bind FallbackValue=0, Path=DataObject.RecentProjects.Count}"
+                        AutomationProperties.AccessibilityView="Content"
+                        AutomationProperties.LabeledBy="{x:Bind Path=lblListeProjets}"
+                        ItemsSource="{Binding RecentProjects}" ItemTemplate="{StaticResource RecentProject}"/>
 
-                <muxc:ItemsRepeater
-                    AutomationProperties.SizeOfSet="{x:Bind DataObject.RecentProjects.Count, FallbackValue=0}"
-                    AutomationProperties.AccessibilityView="Content"
-                    AutomationProperties.LabeledBy="{x:Bind lblListeProjets}"
-                    ItemsSource="{Binding RecentProjects}" ItemTemplate="{StaticResource RecentProject}">
-
-                </muxc:ItemsRepeater>
-
-                <Button Style="{ThemeResource ButtonRevealStyle}"
+                    <Button Style="{StaticResource TransparentRevealButton}"
                         x:Uid="Button_Home_MoreProjects"
-                        IsEnabled="{x:Bind HasMoreProjects(DataObject.RecentProjects.Count)}"
+                        IsEnabled="{x:Bind Path=HasMoreProjects(DataObject.RecentProjects.Count)}"
                         Background="Transparent">
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="More" Margin="0,0,6,0" />
-                        <TextBlock x:Uid="Button_Home_MoreProjects_Label">+ de projets</TextBlock>
-                    </StackPanel>
-                </Button>
-
-                <TextBlock Text="NOUVEAU PROJET" FontWeight="Thin" 
-                           AutomationProperties.ItemType="Label"
-                           AutomationProperties.Name="Creer un nouveau projet"
-                           AutomationProperties.HeadingLevel="Level2"
-                           x:Name="lblNouveauProjet"
-                           
-                           Foreground="#696969" Margin="0,20,0,10" />
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Margin="0,0,10,0"
-                          AutomationProperties.LabeledBy="{x:Bind lblNouveauProjet}"
-                            AutomationProperties.Name="Nouveau projet">
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="NewFolder" Margin="0,0,6,0" />
-                            <TextBlock>Nouveau projet</TextBlock>
+                            <SymbolIcon Symbol="More" Margin="0,0,6,0" />
+                            <TextBlock x:Uid="Button_Home_MoreProjects_Label"><Run Text="+ de projets"/></TextBlock>
                         </StackPanel>
                     </Button>
-
-                    <Button Margin="0,0,10,0"
-                          AutomationProperties.LabeledBy="{x:Bind lblNouveauProjet}"
-                            AutomationProperties.Name="Nouveau depuis un modèle">
-                        <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Document" Margin="0,0,6,0" />
-                            <TextBlock>Depuis un modèle</TextBlock>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Margin="0,0,10,0" 
-                          AutomationProperties.LabeledBy="{x:Bind lblNouveauProjet}"
-                            AutomationProperties.Name="Importer projet depuis Azure Devops">
-                        <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Bookmarks" Margin="0,0,6,0" />
-                            <TextBlock>Depuis Azure DevOps</TextBlock>
-                        </StackPanel>
-                    </Button>
-
                 </StackPanel>
+                <StackPanel x:Name="pnlNew" RelativePanel.RightOf="pnlProjectList" Margin="40,100,0,0">
+                    <TextBlock Text="NOUVEAU PROJET" FontWeight="Thin" 
+                        AutomationProperties.ItemType="Label"
+                        AutomationProperties.Name="Creer un nouveau projet"
+                        AutomationProperties.HeadingLevel="Level2"
+                        x:Name="lblNouveauProjet"
+                           
+                        Foreground="#696969" Margin="0,0,0,10" />
+                    <StackPanel>
+                        <Button Style="{ThemeResource TransparentRevealButton}"
+                            AutomationProperties.LabeledBy="{x:Bind Path=lblNouveauProjet}"
+                            AutomationProperties.Name="Nouveau projet" Margin="0,4,0,4">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="NewFolder" Margin="0,0,6,0" />
+                                <TextBlock><Run Text="Nouveau projet"/></TextBlock>
+                            </StackPanel>
+                        </Button>
 
+                        <Button
+                            AutomationProperties.LabeledBy="{x:Bind Path=lblNouveauProjet}"
+                            AutomationProperties.Name="Nouveau depuis un modèle" Style="{StaticResource TransparentRevealButton}" Margin="0,4,0,4">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Document" Margin="0,0,6,0" />
+                                <TextBlock><Run Text="Depuis un modèle"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button 
+                            AutomationProperties.LabeledBy="{x:Bind Path=lblNouveauProjet}"
+                            AutomationProperties.Name="Importer projet depuis Azure Devops" Style="{StaticResource TransparentRevealButton}" Margin="0,4,0,4">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Bookmarks" Margin="0,0,6,0" />
+                                <TextBlock><Run Text="Depuis Azure DevOps"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </StackPanel>
 
             </StackPanel>
 
-            <Button BorderBrush="{x:Null}" BorderThickness="0"
+            <Button 
                     VerticalAlignment="Top" Margin="40" HorizontalAlignment="Right"
                     x:Uid="MainPage_UserButton"
                     AutomationProperties.Name="{x:Bind local:LocalizationHelper.FormatNameForSettings(DataObject.Me.Name), Mode=OneWay}"
-                    Background="Transparent" x:Name="bntSettings" Click="bntSettings_Click">
+                    x:Name="bntSettings" Click="bntSettings_Click" Style="{StaticResource TransparentRevealButton}">
                 <StackPanel Orientation="Horizontal">
                     <muxc:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind DataObject.Me.Image, Mode=OneWay, Converter={StaticResource ByteToImage}}" Height="48" />
                     <StackPanel VerticalAlignment="Center">
