@@ -99,9 +99,10 @@ namespace ProjectPadUWP
             var activity = await channel.GetOrCreateUserActivityAsync("open:" + project.MetaData.Id);
 
             activity.ActivationUri = new Uri("useopsprjpad://projects/" + project.MetaData.Id);
+            activity.IsRoamable = true;
             activity.VisualElements.DisplayText = project.MetaData.Name;
             activity.VisualElements.Description = LocalizationHelper.FormatActivityForProject(project);
-
+            
             await activity.SaveAsync();
 
             _editProjectSession = activity.CreateSession();
