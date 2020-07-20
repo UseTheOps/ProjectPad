@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -39,6 +40,33 @@ namespace ProjectPadUWP
             this.Suspending += OnSuspending;
         }
 
+        protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+
+
+            // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu,
+            // assurez-vous juste que la fenêtre est active
+            if (rootFrame == null)
+            {
+                SettingsManager sett = await PreinitApp();
+                rootFrame = new Frame();
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                // Placez le frame dans la fenêtre active
+                Window.Current.Content = rootFrame;
+
+                InitApplicationData(sett);
+                rootFrame.Navigate(typeof(ShareTargetPage), args);
+                Window.Current.Activate();
+            }
+            else
+            {
+
+            }
+
+        }
+
         protected async override void OnActivated(IActivatedEventArgs e)
         {
 
@@ -63,6 +91,7 @@ namespace ProjectPadUWP
                 {
                     var prj = await ProjectPad.Business.ProjectPadApplication.Instance.OpenProject(name);
                     rootFrame.Navigate(typeof(ProjectPage), prj);
+                    Window.Current.Activate();
                 }
                 else
                 {
@@ -111,23 +140,7 @@ namespace ProjectPadUWP
 
         private async Task<Frame> StartApp(IActivatedEventArgs e)
         {
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
-            titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
-            titleBar.ButtonBackgroundColor = c;
-
-
-
-            SettingsManager sett = new SettingsManager();
-            var lang = await sett.GetSetting("chosen_culture", true);
-            if (!string.IsNullOrEmpty(lang))
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
-            }
+            SettingsManager sett = await PreinitApp();
 
 
             // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
@@ -146,12 +159,38 @@ namespace ProjectPadUWP
             // Placez le frame dans la fenêtre active
             Window.Current.Content = rootFrame;
 
-
-            ProjectPad.Business.ProjectPadApplication.Create(new TokenProvider(), sett);
-            ProjectPad.Business.ProjectPadApplication.Instance.RefreshGlobals();
-
+            InitApplicationData(sett);
 
             return rootFrame;
+        }
+
+        private static async Task<SettingsManager> PreinitApp()
+        {
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
+            titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
+            titleBar.ButtonBackgroundColor = c;
+
+
+
+            SettingsManager sett = new SettingsManager();
+            var lang = await sett.GetSetting("chosen_culture", true);
+            if (!string.IsNullOrEmpty(lang))
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+            }
+
+            return sett;
+        }
+
+        private static void InitApplicationData(SettingsManager sett)
+        {
+            ProjectPad.Business.ProjectPadApplication.Create(new TokenProvider(), sett);
+            ProjectPad.Business.ProjectPadApplication.Instance.RefreshGlobals();
         }
 
 
