@@ -212,18 +212,7 @@
 
         </Grid>
 
-        <Grid x:Name="AppTitleBar" Background="Transparent" VerticalAlignment="Top" d:IsLocked="True">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
-                <ColumnDefinition/>
-                <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
-            </Grid.ColumnDefinitions>
-            <Image Source="Assets/Square44x44Logo.png" 
-           Grid.Column="1" HorizontalAlignment="Left"  VerticalAlignment="Center"
-           Width="28" Height="28" Margin="12,0"/>
-            <TextBlock Grid.Column="1" VerticalAlignment="Center"
-               Margin="44,0,0,0" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="12"><Span FontWeight="Black" Foreground="#125887">PROJECT</Span> PAD</TextBlock>
-        </Grid>
+        <local:BasicHeader x:Name="AppTitleBar" />
 
     </Grid>
 </Page>

@@ -9,6 +9,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Text="ShareTargetPage" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <local:BasicHeader x:Name="AppTitleBar" />
+        <StackPanel Margin="60,60,0,0">
+            <RadioButton GroupName="TypeShare" x:Name="rdoShareGeneral" Content="Ne pas associer à un projet" />
+            <RadioButton GroupName="TypeShare" x:Name="rdoShareProject" Content="Associer à un projet" />
+            <ComboBox x:Name="cboProjects" 
+                      ItemsSource="{x:Bind RecentProjects, Mode=OneWay}" DisplayMemberPath="Name" SelectedValuePath="Id"
+                      IsEnabled="{x:Bind rdoShareProject.IsChecked.GetValueOrDefault(), Mode=OneWay}" />
+        </StackPanel>
     </Grid>
 </Page>

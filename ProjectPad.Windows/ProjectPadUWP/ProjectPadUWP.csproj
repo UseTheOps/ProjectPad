@@ -130,6 +130,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BasicHeader.xaml.cs">
+      <DependentUpon>BasicHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ByteToImageSourceConverter.cs" />
     <Compile Include="ExtendedSplash.xaml.cs">
       <DependentUpon>ExtendedSplash.xaml</DependentUpon>
@@ -223,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="BasicHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExtendedSplash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

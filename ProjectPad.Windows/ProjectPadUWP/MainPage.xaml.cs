@@ -42,7 +42,6 @@ namespace ProjectPadUWP
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
-            AppTitleBar.Height = sender.Height;
             viewConnecte.Margin = new Thickness(0, sender.Height, 0, 0);
         }
 
@@ -50,17 +49,9 @@ namespace ProjectPadUWP
         {
             base.OnNavigatedTo(e);
 
-
-            // changing title bar to custom
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
+            CoreApplicationViewTitleBar coreTitleBar = AppTitleBar.InitHeaderBar();
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-            Window.Current.SetTitleBar(AppTitleBar);
 
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
-            titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
-            titleBar.ButtonBackgroundColor = c;
 
             // disabling back button
             var frame = this.Frame;
@@ -77,7 +68,7 @@ namespace ProjectPadUWP
 
             }
 
-            if (App.ActivatedProject!=null)
+            if (App.ActivatedProject != null)
             {
                 string s = App.ActivatedProject;
                 App.ActivatedProject = null;

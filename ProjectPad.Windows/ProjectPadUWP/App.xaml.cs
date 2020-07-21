@@ -57,7 +57,8 @@ namespace ProjectPadUWP
                 Window.Current.Content = rootFrame;
 
                 InitApplicationData(sett);
-                rootFrame.Navigate(typeof(ShareTargetPage), args);
+                args.ShareOperation.ReportStarted();
+                rootFrame.Navigate(typeof(ShareTargetPage), args.ShareOperation);
                 Window.Current.Activate();
             }
             else
