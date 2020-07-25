@@ -30,6 +30,7 @@ namespace ProjectPadUWP
     /// </summary>
     public sealed partial class ProjectPage : Page
     {
+        DispatcherTimer _timerSave = null;
 
         public UserActivitySession _editProjectSession;
 
@@ -44,6 +45,19 @@ namespace ProjectPadUWP
                     Name = "New"
                 }
             };
+            _timerSave = new DispatcherTimer();
+            _timerSave.Interval = TimeSpan.FromSeconds(5);
+            _timerSave.Tick += _timerSave_Tick;
+        }
+
+        private async void _timerSave_Tick(object sender, object e)
+        {
+            if (this.CurrentProject.IsDirty)
+            {
+                _timerSave.Stop();
+                await this.CurrentProject.Save();
+                _timerSave.Start();
+            }
         }
 
         public ProjectViewModel CurrentProject { get; set; }
@@ -61,7 +75,7 @@ namespace ProjectPadUWP
                 this.CurrentProject = prj;
                 Bindings.Update();
                 await AddActivity(prj);
-
+                _timerSave.Start();
             }
 
             var coreApp = CoreApplication.GetCurrentView();
@@ -71,6 +85,7 @@ namespace ProjectPadUWP
             
             // Set XAML element as a draggable region.
             Window.Current.SetTitleBar(AppTitleBar);
+            Window.Current.Activated += Current_Activated;
 
             var app = ApplicationView.GetForCurrentView();
             app.Title = this.CurrentProject?.MetaData.Name + "-";
@@ -113,6 +128,7 @@ namespace ProjectPadUWP
         {
             base.OnNavigatedFrom(e);
 
+            _timerSave.Stop();
 
             if (_editProjectSession != null)
                 _editProjectSession.Dispose();
@@ -140,7 +156,27 @@ namespace ProjectPadUWP
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
             AppTitleBar.Height = sender.Height;
+            LeftPaddingColumn.Width = new GridLength(sender.SystemOverlayLeftInset);
+            RightPaddingColumn.Width = new GridLength(sender.SystemOverlayRightInset);
+            stackTitleInteractive.Margin = new Thickness(sender.SystemOverlayLeftInset, 0, sender.SystemOverlayRightInset, 0);
         }
+
+        private void Current_Activated(object sender, Windows.UI.Core.WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == Windows.UI.Core.CoreWindowActivationState.Deactivated)
+            {
+                AppTitleBar.Opacity = 0.75;
+                stackTitleInteractive.Opacity = 0.25;
+                gridCommandBar.Opacity = 0.75;
+            }
+            else
+            {
+                AppTitleBar.Opacity = 1;
+                stackTitleInteractive.Opacity = 1;
+                gridCommandBar.Opacity = 1;
+            }
+        }
+
 
         private void nvMainPage_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
         {

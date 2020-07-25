@@ -9,15 +9,28 @@ namespace ProjectPad.Business
 {
     partial class ProjectViewModel
     {
+        
         public async Task Save()
         {
-            await ProjectPadApplication._settingsMgr.CreateFolder(this.MetaData.Id);
-            string json = JsonConvert.SerializeObject(this.MetaData);
-            await ProjectPadApplication._settingsMgr.WriteFile($"{this.MetaData.Id}\\meta.json", json);
-            json = JsonConvert.SerializeObject(this._Items);
-            await ProjectPadApplication._settingsMgr.WriteFile($"{this.MetaData.Id}\\content.json", json);
-            await ProjectPadApplication.Instance.AddToRecentList(this);
-            IsAvailableOnLocal = true;
+            if (_IsSaving)
+                return;
+            try
+            {
+                IsSaving = true;
+                await ProjectPadApplication._settingsMgr.CreateFolder(this.MetaData.Id);
+                string json = JsonConvert.SerializeObject(this.MetaData);
+                await ProjectPadApplication._settingsMgr.WriteFile($"{this.MetaData.Id}\\meta.json", json);
+                json = JsonConvert.SerializeObject(this._Items);
+                await ProjectPadApplication._settingsMgr.WriteFile($"{this.MetaData.Id}\\content.json", json);
+                await ProjectPadApplication.Instance.AddToRecentList(this);
+                foreach (var t in this._Items)
+                    t.dtLoaded = DateTime.Now;
+                IsAvailableOnLocal = true;
+            }
+            finally
+            {
+                IsSaving = false;
+            }
         }
 
 
@@ -68,12 +81,38 @@ namespace ProjectPad.Business
 
         private async Task LoadCoreData()
         {
-            using (var t = await ProjectPadApplication._settingsMgr.OpenFileForRead($"{this.MetaData.Id}\\content.json"))
+            try
             {
-                // chargement des données
-                string json = t.ReadToEnd();
-                DateTime dtLoaded = DateTime.Now;
+                using (var t = await ProjectPadApplication._settingsMgr.OpenFileForRead($"{this.MetaData.Id}\\content.json"))
+                {
+                    // chargement des données
+                    string json = t.ReadToEnd();
+                    DateTime dtLoaded = DateTime.Now;
+                    List<ProjectViewModelItem> itsFile = JsonConvert.DeserializeObject<List<ProjectViewModelItem>>(json);
+                    DisablePropertyChangeEvent = true;
 
+                    // comparer chaque bloc et mettre à jour
+
+                    this._Items.Clear();
+                    foreach (var r in itsFile)
+                    {
+                        r.dtLoaded = dtLoaded;
+                        r.dtChanged = dtLoaded;
+                        this._Items.Add(r);
+                    }
+
+                    foreach (var dt in _Items)
+                        dt.dtLoaded = dtLoaded;
+
+                    IsAvailableOnLocal = true;
+                    DisablePropertyChangeEvent = false;
+                }
+            }
+            catch (Exception)
+            {
+#if DEBUG
+                // TODO: a retirer après avoir fini la création du système de fichier :)
+                DateTime dtLoaded = DateTime.Now;
                 DisablePropertyChangeEvent = true;
 
                 this._Items.Clear();
@@ -95,6 +134,9 @@ namespace ProjectPad.Business
 
                 IsAvailableOnLocal = true;
                 DisablePropertyChangeEvent = false;
+#else
+                throw;
+#endif
             }
         }
 

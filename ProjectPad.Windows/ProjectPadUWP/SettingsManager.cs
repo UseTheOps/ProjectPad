@@ -58,6 +58,8 @@ namespace ProjectPadUWP
             try
             {
                 file = await st.GetFileAsync(fileName);
+                await file.DeleteAsync();
+                file = await st.CreateFileAsync(fileName);
             }
             catch(FileNotFoundException)
             {
@@ -68,6 +70,7 @@ namespace ProjectPadUWP
             using(var wri = new StreamWriter(stream))
             {
                 wri.Write(content);
+                
             }
         }
 

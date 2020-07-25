@@ -45,6 +45,12 @@ namespace ProjectPad.Business
         {
             get
             {
+                foreach(var r in _Items)
+                {
+                    if (r.dtChanged > r.dtLoaded)
+                        return true;
+                }
+
                 return false;
             }
         }
@@ -56,12 +62,29 @@ namespace ProjectPad.Business
             {
                 return _IsAvailableOnLocal;
             }
-            set
+            private set
             {
                 if (value != _IsAvailableOnLocal)
                 {
                     _IsAvailableOnLocal = value;
                     OnPropertyChanged(nameof(IsAvailableOnLocal));
+                }
+            }
+        }
+
+        private bool _IsSaving = false;
+        public bool IsSaving
+        {
+            get
+            {
+                return _IsSaving;
+            }
+            private set
+            {
+                if (value != _IsSaving)
+                {
+                    _IsSaving = value;
+                    OnPropertyChanged(nameof(IsSaving));
                 }
             }
         }

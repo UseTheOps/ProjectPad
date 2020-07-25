@@ -23,10 +23,14 @@ namespace ProjectPadUWP.Views
     /// </summary>
     public sealed partial class MainView : Page
     {
+
         public MainView()
         {
             this.InitializeComponent();
+            
         }
+
+
 
         public ProjectViewModel CurrentProject { get; set; }
 

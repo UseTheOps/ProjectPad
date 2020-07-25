@@ -32,11 +32,13 @@
            Width="28" Height="28" Margin="12,0"/>
             <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="white" 
                Margin="44,0,0,0" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="12"><Span FontWeight="Black" >PROJECT</Span> PAD</TextBlock>
-
-            <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind CurrentProject.MetaData.Name}" Foreground="white"  />
         </Grid>
 
-        <Grid Grid.Row="1" Background="#125887">
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="stackTitleInteractive">
+            <TextBlock Text="{x:Bind CurrentProject.MetaData.Name}" Foreground="white"  />
+        </StackPanel>
+            
+        <Grid Grid.Row="1" x:Name="gridCommandBar" Background="#125887">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="auto" />

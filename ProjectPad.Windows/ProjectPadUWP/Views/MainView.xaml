@@ -12,17 +12,27 @@
 
     <Page.Resources>
 
-        <DataTemplate x:Key="BasicProjectItem" >
-            <TextBlock Text="{Binding StringContent}" />
+        <DataTemplate x:Key="TitleProjectItem" >
+            <TextBox BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     FontSize="32" />
         </DataTemplate>
-        
+
+        <DataTemplate x:Key="TextContentProjectItem" >
+            <TextBox BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </DataTemplate>
+
+        <local:ProjectItemKindTemplateSelector x:Key="TemplateSelector"
+                                               Title="{StaticResource TitleProjectItem}"
+                                               TextContent="{StaticResource TextContentProjectItem}"
+                                               />
+
     </Page.Resources>
     
     <Grid>
-        <muxc:ItemsRepeater
+        <ItemsControl
                         AutomationProperties.SizeOfSet="{x:Bind FallbackValue=0, Path=CurrentProject.ContentItems.Count}"
                         AutomationProperties.AccessibilityView="Content"
-                        ItemsSource="{Binding ContentItems}" ItemTemplate="{StaticResource BasicProjectItem}"/>
+                        ItemsSource="{Binding ContentItems}" ItemTemplateSelector="{StaticResource TemplateSelector}" />
 
     </Grid>
 </Page>
