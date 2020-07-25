@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectPad.Business;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,33 @@ namespace ProjectPadUWP.Views
         public MainView()
         {
             this.InitializeComponent();
+        }
+
+        public ProjectViewModel CurrentProject { get; set; }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if(e.Parameter is ProjectViewModel)
+            {
+                this.CurrentProject = e.Parameter as ProjectViewModel;
+                this.DataContext = this.CurrentProject;
+                this.CurrentProject.PropertyChanged += CurrentProject_PropertyChanged;
+            }
+        }
+
+        private void CurrentProject_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            if(this.CurrentProject!=null)
+            {
+                this.CurrentProject.PropertyChanged -= CurrentProject_PropertyChanged;
+            }
         }
     }
 }

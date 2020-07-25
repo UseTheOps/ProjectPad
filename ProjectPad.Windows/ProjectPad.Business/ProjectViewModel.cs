@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectPad.Business
 {
-    public class ProjectViewModel : ViewModelBase
+    public partial class ProjectViewModel : ViewModelBase
     {
         public async static Task<ProjectViewModel> Get(string projectId)
         {
@@ -22,27 +22,33 @@ namespace ProjectPad.Business
 
             try
             {
-                using (var t = await ProjectPadApplication._settingsMgr.OpenFileForRead($"{projectId}\\meta.json"))
-                {
-                    p.DisablePropertyChangeEvent = true;
-                    // chargement des données
-                    string json = t.ReadToEnd();
-                    var meta = JsonConvert.DeserializeObject<ProjectMetaData>(json);
-
-                    p.MetaData = meta;
-
-                    p.IsAvailableOnLocal = true;
-                    p.DisablePropertyChangeEvent = false;
-                }
+                await LoadMetaData(projectId, p);
             }
             catch (FileNotFoundException)
             {
                 p.IsAvailableOnLocal = false;
             }
 
+            if (p.IsAvailableOnLocal)
+            {
+                await p.LoadCoreData();
+            }
+            else
+            {
+
+            }
+
             return p;
         }
 
+        public bool IsDirty
+        {
+            get
+            {
+                return false;
+            }
+        }
+        
         private bool _IsAvailableOnLocal = false;
         public bool IsAvailableOnLocal
         {
@@ -52,7 +58,7 @@ namespace ProjectPad.Business
             }
             set
             {
-                if(value!=_IsAvailableOnLocal)
+                if (value != _IsAvailableOnLocal)
                 {
                     _IsAvailableOnLocal = value;
                     OnPropertyChanged(nameof(IsAvailableOnLocal));
@@ -62,22 +68,16 @@ namespace ProjectPad.Business
 
         public ProjectMetaData MetaData { get; set; }
 
-        public class ProjectMetaData
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
 
+        private List<ProjectViewModelItem> _Items = new List<ProjectViewModelItem>();
+        public IReadOnlyList<ProjectViewModelItem> ContentItems
+        {
+            get
+            {
+                return _Items.AsReadOnly();
+            }
         }
 
-
-        public async Task Save()
-        {
-            await ProjectPadApplication._settingsMgr.CreateFolder(this.MetaData.Id);
-            string json = JsonConvert.SerializeObject(this.MetaData);
-            await ProjectPadApplication._settingsMgr.WriteFile($"{this.MetaData.Id}\\meta.json", json);
-            await ProjectPadApplication.Instance.AddToRecentList(this);
-            IsAvailableOnLocal = true;
-        }
     }
 
 }

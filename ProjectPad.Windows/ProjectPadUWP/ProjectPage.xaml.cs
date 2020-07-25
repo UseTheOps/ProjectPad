@@ -168,7 +168,7 @@ namespace ProjectPadUWP
             if (contentFrame.Content != null && contentFrame.Content.GetType().Equals(pageType))
                 return;
 
-            contentFrame.NavigateToType(pageType, null, navOptions);
+            contentFrame.NavigateToType(pageType, this.CurrentProject, navOptions);
         }
 
         private async void btnClosePage_Click(object sender, RoutedEventArgs e)
