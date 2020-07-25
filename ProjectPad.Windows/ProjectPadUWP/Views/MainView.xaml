@@ -13,12 +13,20 @@
     <Page.Resources>
 
         <DataTemplate x:Key="TitleProjectItem" >
-            <TextBox BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <Grid>
+                <TextBox Margin="72,40,24,10"
+                         BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="32" />
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="TextContentProjectItem" >
-            <TextBox BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Grid>
+            <TextBox Margin="72,10,24,10" BorderBrush="{x:Null}" BorderThickness="0"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" 
+                     Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
         </DataTemplate>
 
         <local:ProjectItemKindTemplateSelector x:Key="TemplateSelector"
@@ -32,7 +40,13 @@
         <ItemsControl
                         AutomationProperties.SizeOfSet="{x:Bind FallbackValue=0, Path=CurrentProject.ContentItems.Count}"
                         AutomationProperties.AccessibilityView="Content"
-                        ItemsSource="{Binding ContentItems}" ItemTemplateSelector="{StaticResource TemplateSelector}" />
+                        ItemsSource="{Binding ContentItems}" ItemTemplateSelector="{StaticResource TemplateSelector}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
 
     </Grid>
 </Page>

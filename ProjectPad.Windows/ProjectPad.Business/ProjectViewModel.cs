@@ -101,6 +101,23 @@ namespace ProjectPad.Business
             }
         }
 
+
+        public ProjectViewModelItem AddItem(ProjectItemKind kind)
+        {
+            var dt = DateTime.Now;
+            var it = new ProjectViewModelItem()
+            {
+                ItemKind = kind,
+                StringContent = "Nouveau",
+                dtChanged = dt,
+                dtLoaded = dt
+            };
+            _Items.Add(it);
+            OnPropertyChanged(nameof(ContentItems));
+            return it;
+        }
+
+
     }
 
 }

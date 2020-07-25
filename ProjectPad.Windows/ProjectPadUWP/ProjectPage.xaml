@@ -47,7 +47,14 @@
                     ClosedDisplayMode="Compact"
                     IsOpen="False" OverflowButtonVisibility="Collapsed" IsDynamicOverflowEnabled="True" DefaultLabelPosition="Right" >
                 <CommandBar.PrimaryCommands>
-                    <AppBarButton Icon="Add" Label="Add" IsCompact="True" Foreground="#efefef" />
+                    <AppBarButton Icon="Add" Label="Add" IsCompact="True" Foreground="#efefef">
+                        <AppBarButton.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Title" Click="AddContentMenuItem_Clicked" Tag="title"/>
+                                <MenuFlyoutItem Text="Contenu texte" Click="AddContentMenuItem_Clicked" Tag="stringcontent"/>
+                            </MenuFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
                 </CommandBar.PrimaryCommands>
             </CommandBar>
 

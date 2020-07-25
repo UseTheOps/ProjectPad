@@ -212,5 +212,18 @@ namespace ProjectPadUWP
             await this.CurrentProject.Save();
             this.Frame.Navigate(typeof(MainPage));
         }
+
+        private void AddContentMenuItem_Clicked(object sender, RoutedEventArgs e)
+        {
+            var kind = ProjectViewModel.ProjectItemKind.TextContent;
+            switch((e.OriginalSource as MenuFlyoutItem)?.Tag?.ToString()?.ToLowerInvariant())
+            {
+                case "title":
+                    kind = ProjectViewModel.ProjectItemKind.Title;
+                    break;
+            }
+
+            this.CurrentProject.AddItem(kind);
+        }
     }
 }
