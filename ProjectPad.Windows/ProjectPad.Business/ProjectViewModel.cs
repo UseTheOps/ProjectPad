@@ -110,7 +110,7 @@ namespace ProjectPad.Business
                 ItemKind = kind,
                 StringContent = "Nouveau",
                 dtChanged = dt,
-                dtLoaded = dt
+                dtLoaded = DateTime.MinValue
             };
             _Items.Add(it);
             OnPropertyChanged(nameof(ContentItems));
