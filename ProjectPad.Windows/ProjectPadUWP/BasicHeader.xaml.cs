@@ -29,23 +29,55 @@ namespace ProjectPadUWP
 
         public CoreApplicationViewTitleBar InitHeaderBar()
         {
+            
             // changing title bar to custom
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             Window.Current.SetTitleBar(this);
+            Window.Current.Activated += Current_Activated;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
+            coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+            
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
             titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
             titleBar.ButtonBackgroundColor = c;
+            titleBar.ButtonInactiveForegroundColor = Windows.UI.Colors.DimGray;
+            titleBar.ButtonInactiveBackgroundColor = c;
             return coreTitleBar;
+        }
+
+        private void Current_Activated(object sender, Windows.UI.Core.WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == Windows.UI.Core.CoreWindowActivationState.Deactivated)
+            {
+                AppTitleBar.Opacity = 0.25;
+            }
+            else
+            {
+                AppTitleBar.Opacity = 1;
+            }
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
             AppTitleBar.Height = sender.Height;
+
+
+            LeftPaddingColumn.Width = new GridLength(sender.SystemOverlayLeftInset);
+            RightPaddingColumn.Width = new GridLength(sender.SystemOverlayRightInset);
         }
 
+        private void CoreTitleBar_IsVisibleChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            if (sender.IsVisible)
+            {
+                AppTitleBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AppTitleBar.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }
