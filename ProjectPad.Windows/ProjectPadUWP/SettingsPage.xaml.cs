@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -65,6 +66,8 @@ namespace ProjectPadUWP
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            CoreApplicationViewTitleBar coreTitleBar = AppTitleBar.InitHeaderBar();
 
             await RefreshCultureCombo();
 

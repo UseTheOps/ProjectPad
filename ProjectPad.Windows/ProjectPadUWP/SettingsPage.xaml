@@ -10,43 +10,76 @@
 
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="240" />
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="PlusQue840Large">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="840" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+
+                        <Setter Target="stackPanel.(UIElement.Visibility)" Value="Visible"/>
+
+                    </VisualState.Setters>
+                </VisualState>
+
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition  />
         </Grid.ColumnDefinitions>
 
-        <StackPanel>
+        <StackPanel x:Name="stackPanel" Width="240" Visibility="Collapsed" Margin="20,100,20,20">
             <Button Style="{StaticResource TransparentRevealButton}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="Images/cloud-download.svg" Width="16" Height="16" VerticalAlignment="Center" Margin="0,5,6,0" />
                     <TextBlock><Run Text="Stockage en ligne"/></TextBlock>
-                </StackPanel></Button>
+                </StackPanel>
+            </Button>
         </StackPanel>
-        
-        <ScrollViewer Grid.Column="1">
-            <StackPanel >
 
-                <AppBarButton x:Name="btnBack"
-                          IsCompact="True" LabelPosition="Collapsed"
-                          Icon="Back"
-                          Click="btnBack_Click"
-                         />
-                <Border x:Name="brdCultureChanged" Visibility="Collapsed">
-                    <TextBlock x:Name="txtCultureChanged">Culture modifiée, veuillez relancer l'application</TextBlock>
+        <ScrollViewer Grid.Column="1" Margin="20,100,20,20">
+            <StackPanel>
 
-                </Border>
+                <TextBlock Text="Votre compte" Style="{StaticResource OptionGroupHeader}" Margin="0,0,0,20"/>
                 <Button x:Name="btnDeconnexion"
                     x:Uid="Button_Settings_Disconnect"
-                    Click="btnDeconnexion_Click">Deconnexion</Button>
+                    Click="btnDeconnexion_Click" Content="Deconnexion"/>
 
+
+                <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Interface utilisateur" />
+
+                <TextBlock Text="Langue" />
+                <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged"/>
+
+                <Border x:Name="brdCultureChanged" Background="#FFE69D9D" 
+                        BorderThickness="3" BorderBrush="Firebrick"
+                        Padding="20,20,21,20" Margin="0,20" Visibility="Collapsed">
+                    <TextBlock x:Name="txtCultureChanged" Foreground="Firebrick" FontWeight="Bold"><Run Text="Culture modifiée, veuillez relancer l'application"/></TextBlock>
+                </Border>
+
+
+                <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Données locales" />
                 <Button x:Name="btnClearCache"
                     Content="Vider le cache"
                     Click="btnClearCache_Click" />
 
 
-                <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged">
-                </ComboBox>
             </StackPanel>
         </ScrollViewer>
+
+        <AppBarButton x:Name="btnBack" Margin="0,40,40,40"
+                      Grid.ColumnSpan="2"
+                          IsCompact="True" LabelPosition="Collapsed"
+                          Icon="Back"
+                          Click="btnBack_Click"
+                         />
+
+        <local:BasicHeader x:Name="AppTitleBar" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+
     </Grid>
 </Page>

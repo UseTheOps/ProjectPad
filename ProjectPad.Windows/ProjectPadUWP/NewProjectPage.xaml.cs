@@ -44,7 +44,7 @@ namespace ProjectPadUWP
 
         public NewProjectData NewProjectItem { get; set; }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
