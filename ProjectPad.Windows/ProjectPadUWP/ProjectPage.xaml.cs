@@ -37,14 +37,7 @@ namespace ProjectPadUWP
         public ProjectPage()
         {
             this.InitializeComponent();
-            CurrentProject = new ProjectViewModel()
-            {
-                MetaData = new ProjectViewModel.ProjectMetaData()
-                {
-                    Id = "--new--",
-                    Name = "New"
-                }
-            };
+            CurrentProject = null;
             _timerSave = new DispatcherTimer();
             _timerSave.Interval = TimeSpan.FromSeconds(5);
             _timerSave.Tick += _timerSave_Tick;
@@ -215,15 +208,7 @@ namespace ProjectPadUWP
 
         private void AddContentMenuItem_Clicked(object sender, RoutedEventArgs e)
         {
-            var kind = ProjectViewModel.ProjectItemKind.TextContent;
-            switch((e.OriginalSource as MenuFlyoutItem)?.Tag?.ToString()?.ToLowerInvariant())
-            {
-                case "title":
-                    kind = ProjectViewModel.ProjectItemKind.Title;
-                    break;
-            }
-
-            this.CurrentProject.AddItem(kind);
+           
         }
     }
 }
