@@ -1,13 +1,18 @@
 ﻿<Page
-    x:Class="ProjectPadUWP.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ProjectPadUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Custom="using:Microsoft.UI.Xaml.Controls"
+    x:Class="ProjectPadUWP.SettingsPage"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <local:ByteToImageSourceConverter x:Key="ByteToImage" />
+    </Page.Resources>
+    
     <Grid>
 
         <VisualStateManager.VisualStateGroups>
@@ -45,16 +50,25 @@
         <ScrollViewer Grid.Column="1" Margin="20,100,20,20">
             <StackPanel>
 
-                <TextBlock Text="Votre compte" Style="{StaticResource OptionGroupHeader}" Margin="0,0,0,20"/>
-                <Button x:Name="btnDeconnexion"
-                    x:Uid="Button_Settings_Disconnect"
-                    Click="btnDeconnexion_Click" Content="Deconnexion"/>
+                <TextBlock Text="Connecté en tant que" Style="{StaticResource OptionGroupHeader}" Margin="0,0,0,20"/>
+                    <StackPanel Orientation="Horizontal" Height="48" Margin="0,0,40,0">
+                        <Custom:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind Converter={StaticResource ByteToImage}, Mode=OneWay, Path=CurrentSettings.Me.Image}" Height="48" />
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{x:Bind FallbackValue=-Non connecté, Mode=OneWay, Path=CurrentSettings.Me.Name}" />
+                            <StackPanel Opacity="0.6" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Microsoft" VerticalAlignment="Center" FontSize="10" />
+                            </StackPanel>
+                        </StackPanel>
 
+                <Button x:Name="btnDeconnexion" Margin="60,0,0,0"
+                    x:Uid="Button_Settings_Disconnect"
+                    Click="btnDeconnexion_Click" Content="Deconnexion" Style="{ThemeResource AccentButtonStyle}"/>
+                </StackPanel>
 
                 <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Interface utilisateur" />
 
-                <TextBlock Text="Langue" />
-                <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged"/>
+                <TextBlock Text="Langue" Margin="0,0,0,4" />
+                <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged" MinWidth="400"/>
 
                 <Border x:Name="brdCultureChanged" Background="#FFE69D9D" 
                         BorderThickness="3" BorderBrush="Firebrick"

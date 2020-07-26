@@ -30,6 +30,7 @@ namespace ProjectPadUWP
         public SettingsPage()
         {
             this.InitializeComponent();
+            this.CurrentSettings = ProjectPadApplication.Instance;
         }
 
         private void btnDeconnexion_Click(object sender, RoutedEventArgs e)
@@ -37,6 +38,8 @@ namespace ProjectPadUWP
             ProjectPad.Business.ProjectPadApplication.Instance.ClearConnections();
             this.Frame.Navigate(typeof(MainPage));
         }
+
+        public ProjectPadApplication CurrentSettings { get; set; }
 
 
         static SettingsPage()

@@ -108,13 +108,6 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="viewConnecte" Visibility="{x:Bind Mode=OneWay, Path=ToVisible(DataObject.HasToken)}" Background="{StaticResource TheBackground}">
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,4">
-                <Image x:Name="logoImageConnected" Source="logo-ops-noir.png" MaxWidth="24" Margin="0,0,0,0"  />
-                <StackPanel VerticalAlignment="Center" Margin="10,0,10,0">
-                    <TextBlock HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="18"><Span FontWeight="Black" Foreground="#125887">PROJECT</Span> PAD</TextBlock>
-                </StackPanel>
-            </StackPanel>
             <StackPanel VerticalAlignment="Center" Margin="65,0,65,0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel x:Name="pnlProjectList">
                     <Grid Height="100">
@@ -170,18 +163,18 @@
                             </StackPanel>
                         </Button>
 
-                        <Button
+                        <Button x:Name="btnNewFromModel"
                             AutomationProperties.LabeledBy="{x:Bind Path=lblNouveauProjet}"
-                            AutomationProperties.Name="Nouveau depuis un modèle" Style="{StaticResource TransparentRevealButton}" Margin="0,4,0,4">
+                            AutomationProperties.Name="Nouveau depuis un modèle" Style="{StaticResource TransparentRevealButton}" Margin="0,4,0,4" IsEnabled="False">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Symbol="Document" Margin="0,0,6,0" />
                                 <TextBlock><Run Text="Depuis un modèle"/></TextBlock>
                             </StackPanel>
                         </Button>
 
-                        <Button 
+                        <Button x:Name="btnNewFromAzureDevops" 
                             AutomationProperties.LabeledBy="{x:Bind Path=lblNouveauProjet}"
-                            AutomationProperties.Name="Importer projet depuis Azure Devops" Style="{StaticResource TransparentRevealButton}" Margin="0,4,0,4">
+                            AutomationProperties.Name="Importer projet depuis Azure Devops" Style="{StaticResource TransparentRevealButton}" Margin="0,4,0,4" IsEnabled="False">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Symbol="Bookmarks" Margin="0,0,6,0" />
                                 <TextBlock><Run Text="Depuis Azure DevOps"/></TextBlock>
