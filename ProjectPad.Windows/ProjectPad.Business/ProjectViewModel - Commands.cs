@@ -25,15 +25,20 @@ namespace ProjectPad.Business
 
             public override void Execute(object parameter)
             {
+                bool sameLevel = true;
                 var kind = ProjectViewModel.ProjectItemKind.TextContent;
                 switch (parameter?.ToString()?.ToLowerInvariant())
                 {
                     case "title":
                         kind = ProjectViewModel.ProjectItemKind.Title;
                         break;
+                    case "subtitle":
+                        kind = ProjectViewModel.ProjectItemKind.Title;
+                        sameLevel = false;
+                        break;
                 }
 
-                _project.AddItem(kind);
+                _project.AddItem(kind, sameLevel);
             }
         }
     }

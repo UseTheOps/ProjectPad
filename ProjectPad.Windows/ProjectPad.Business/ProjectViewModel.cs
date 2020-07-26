@@ -9,6 +9,12 @@ namespace ProjectPad.Business
 {
     public partial class ProjectViewModel : ViewModelBase
     {
+        public AddContentCommand AddContent { get; private set; }
+        protected internal ProjectViewModel()
+        {
+            AddContent = new AddContentCommand(this);
+        }
+
         public async static Task<ProjectViewModel> Get(string projectId)
         {
             ProjectViewModel p = new ProjectViewModel()
@@ -47,6 +53,7 @@ namespace ProjectPad.Business
             {
                 foreach(var r in _Items)
                 {
+                    
                     if (r.dtChanged > r.dtLoaded)
                         return true;
                 }
@@ -102,7 +109,12 @@ namespace ProjectPad.Business
         }
 
 
-        public ProjectViewModelItem AddItem(ProjectItemKind kind)
+        public ProjectViewModelItem AddItem(ProjectItemKind kind, bool sameLevel)
+        {
+            return InsertItemAt(_Items.Count, kind, sameLevel);
+        }
+
+        public ProjectViewModelItem InsertItemAt(int index, ProjectItemKind kind, bool sameLevel)
         {
             var dt = DateTime.Now;
             var it = new ProjectViewModelItem()
@@ -110,9 +122,9 @@ namespace ProjectPad.Business
                 ItemKind = kind,
                 StringContent = "Nouveau",
                 dtChanged = dt,
-                dtLoaded = DateTime.MinValue
+                dtLoaded = DateTimeOffset.Now.AddDays(-1)
             };
-            _Items.Add(it);
+            _Items.Insert(index, it);
             OnPropertyChanged(nameof(ContentItems));
             return it;
         }

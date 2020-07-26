@@ -24,7 +24,7 @@ namespace ProjectPad.Business
                 await ProjectPadApplication._settingsMgr.WriteFile($"{this.MetaData.Id}\\content.json", json);
                 await ProjectPadApplication.Instance.AddToRecentList(this);
                 foreach (var t in this._Items)
-                    t.dtLoaded = DateTime.Now;
+                    t.dtLoaded = DateTimeOffset.Now;
                 IsAvailableOnLocal = true;
             }
             finally

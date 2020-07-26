@@ -144,5 +144,19 @@ namespace ProjectPadUWP
         {
             GoBack();
         }
+
+        private async void btnClearCache_Click(object sender, RoutedEventArgs e)
+        {
+            this.IsEnabled = false;
+            try
+            {
+                await ProjectPad.Business.ProjectPadApplication.Instance.ClearData(true);
+                this.Frame.Navigate(typeof(MainPage));
+            }
+            finally
+            {
+                this.IsEnabled = true;
+            }
+        }
     }
 }

@@ -90,6 +90,32 @@ namespace ProjectPadUWP
             return Task.CompletedTask;
         }
 
+        public async Task ClearAll(bool includeRoaming)
+        {
+            var st = ApplicationData.Current.LocalSettings;
+            st.Values.Clear();
+            var fold = ApplicationData.Current.LocalFolder;
+            foreach (var f in await fold.GetFilesAsync())
+                await f.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            foreach (var fo in await fold.GetFoldersAsync())
+                await fo.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            fold = ApplicationData.Current.LocalCacheFolder;
+            foreach (var f in await fold.GetFilesAsync())
+                await f.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            foreach (var fo in await fold.GetFoldersAsync())
+                await fo.DeleteAsync(StorageDeleteOption.PermanentDelete);
 
+            if (includeRoaming)
+            {
+                st = ApplicationData.Current.RoamingSettings;
+                st.Values.Clear();
+                fold = ApplicationData.Current.RoamingFolder;
+                foreach (var f in await fold.GetFilesAsync())
+                    await f.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                foreach (var fo in await fold.GetFoldersAsync())
+                    await fo.DeleteAsync(StorageDeleteOption.PermanentDelete);
+            }
+
+        }
     }
 }

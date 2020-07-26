@@ -39,7 +39,7 @@ namespace ProjectPad.Business
                         _ItemKind = value;
                         // DisablePropertyChangeEvent = true when loading
                         if (!DisablePropertyChangeEvent)
-                            dtChanged = DateTime.Now;
+                            dtChanged = DateTimeOffset.Now;
                         OnPropertyChanged(nameof(ItemKind));
                     }
                 }
@@ -60,17 +60,63 @@ namespace ProjectPad.Business
                         _StringContent = value;
                         // DisablePropertyChangeEvent = true when loading
                         if (!DisablePropertyChangeEvent) 
-                            dtChanged = DateTime.Now;
+                            dtChanged = DateTimeOffset.Now;
                         OnPropertyChanged(nameof(StringContent));
                     }
                 }
             }
 
-            [JsonIgnoreAttribute]
-            public DateTime dtLoaded = DateTime.MinValue;
+
+            private Guid _guid = Guid.Empty;
+
+            public Guid Guid
+            {
+                get
+                {
+                    return _guid;
+                }
+                set
+                {
+                    if (value != _guid)
+                    {
+                        _guid = value;
+                        // DisablePropertyChangeEvent = true when loading
+                        if (!DisablePropertyChangeEvent)
+                            dtChanged = DateTimeOffset.Now;
+                        OnPropertyChanged(nameof(Guid));
+                    }
+                }
+            }
+
+
+            private Guid? _parentGuid = Guid.Empty;
+
+            public Guid? ParentGuid
+            {
+                get
+                {
+                    return _parentGuid;
+                }
+                set
+                {
+                    if (value != _parentGuid)
+                    {
+                        _parentGuid = value;
+                        // DisablePropertyChangeEvent = true when loading
+                        if (!DisablePropertyChangeEvent)
+                            dtChanged = DateTimeOffset.Now;
+                        OnPropertyChanged(nameof(ParentGuid));
+                    }
+                }
+            }
+
+
 
             [JsonIgnoreAttribute]
-            public DateTime dtChanged = DateTime.MinValue;
+            public DateTimeOffset dtLoaded = DateTimeOffset.MinValue;
+
+            
+            public DateTimeOffset dtChanged { get; set; } = DateTimeOffset.MinValue;
 
         }
     }

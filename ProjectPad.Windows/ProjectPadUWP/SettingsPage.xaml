@@ -38,6 +38,12 @@
                 <Button x:Name="btnDeconnexion"
                     x:Uid="Button_Settings_Disconnect"
                     Click="btnDeconnexion_Click">Deconnexion</Button>
+
+                <Button x:Name="btnClearCache"
+                    Content="Vider le cache"
+                    Click="btnClearCache_Click" />
+
+
                 <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged">
                 </ComboBox>
             </StackPanel>

@@ -161,11 +161,12 @@
                         Foreground="#696969" Margin="0,0,0,10" />
                     <StackPanel>
                         <Button Style="{ThemeResource TransparentRevealButton}"
+                                x:Name="btnNewProject" Click="btnNewProject_Click"
                             AutomationProperties.LabeledBy="{x:Bind Path=lblNouveauProjet}"
                             AutomationProperties.Name="Nouveau projet" Margin="0,4,0,4">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Symbol="NewFolder" Margin="0,0,6,0" />
-                                <TextBlock><Run Text="Nouveau projet"/></TextBlock>
+                                <TextBlock ><Run Text="Nouveau projet"/></TextBlock>
                             </StackPanel>
                         </Button>
 
@@ -212,7 +213,7 @@
 
         </Grid>
 
-        <local:BasicHeader x:Name="AppTitleBar" />
+        <local:BasicHeader x:Name="AppTitleBar" VerticalAlignment="Top" />
 
     </Grid>
 </Page>

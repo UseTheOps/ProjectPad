@@ -45,17 +45,36 @@ namespace ProjectPad.Business
                 OnPropertyChanged("HasToken");
             }
 
-            if(Me==null)
+            if (newHasToken)
             {
-                var tmp = await GraphApiHelper.GetMe();
-                Me = new UserData()
+                // only if a token is available
+                if (Me == null)
                 {
-                    ConnectionType = "GraphApi",
-                    Image = tmp.ImageData,
-                    Name = tmp.displayName
-                };
-                OnPropertyChanged("Me");
+                    var tmp = await GraphApiHelper.GetMe();
+                    Me = new UserData()
+                    {
+                        ConnectionType = "GraphApi",
+                        Image = tmp.ImageData,
+                        Name = tmp.displayName
+                    };
+                    OnPropertyChanged("Me");
+                }
             }
+        }
+
+        public async Task<ProjectViewModel> CreateProject(string name, string id)
+        {
+            var p = new ProjectViewModel()
+            {
+                MetaData = new ProjectViewModel.ProjectMetaData()
+                {
+                    Id = id,
+                    Name = name
+                },
+            };
+            await p.Save();
+            await AddToRecentList(p);
+            return p;
         }
 
         public async Task<string> GetPreferredCulture()
@@ -71,18 +90,14 @@ namespace ProjectPad.Business
         public async Task RefreshRecent()
         {
 
-            if (RecentProjects.Count == 0)
+            var tmp = await _settingsMgr.GetSetting("recent_projects", true);
+            if (tmp != null)
             {
-                var tmp = await _settingsMgr.GetSetting("recent_projects", true);
-                if (tmp != null)
-                {
-                    RecentProjects = JsonConvert.DeserializeObject<List<RecentProject>>(tmp);
-                }
-                else // pour les tests pour l'instant
-                {
-                    RecentProjects.Add(new RecentProject() { Id = "project1", Name = "Project 1", LastChange = DateTime.Now.AddDays(-1) }); ;
-                    RecentProjects.Add(new RecentProject() { Id = "project2", Name = "Project 2", LastChange = DateTime.Now.AddDays(-2) });
-                }
+                RecentProjects = JsonConvert.DeserializeObject<List<RecentProject>>(tmp);
+            }
+            else
+            {
+                RecentProjects = new List<RecentProject>();
             }
 
             OnPropertyChanged("RecentProjects");
@@ -104,6 +119,12 @@ namespace ProjectPad.Business
         public void ClearConnections()
         {
             _graphApiTokenProvider.ClearToken();
+        }
+
+        public async Task ClearData(bool includeRoaming)
+        {
+            await _settingsMgr.ClearAll(includeRoaming);
+            await RefreshRecent();
         }
 
         public async Task<ProjectViewModel> OpenProject(string id)

@@ -134,5 +134,11 @@ namespace ProjectPadUWP
         {
             return count.GetValueOrDefault(0) > 3;
         }
+
+
+        private void btnNewProject_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(NewProjectPage));
+        }
     }
 }
