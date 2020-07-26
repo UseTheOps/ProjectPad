@@ -9,22 +9,38 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
 
-            <AppBarButton x:Name="btnBack"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition  />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel>
+            <Button Style="{StaticResource TransparentRevealButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/cloud-download.svg" Width="16" Height="16" VerticalAlignment="Center" Margin="0,5,6,0" />
+                    <TextBlock><Run Text="Stockage en ligne"/></TextBlock>
+                </StackPanel></Button>
+        </StackPanel>
+        
+        <ScrollViewer Grid.Column="1">
+            <StackPanel >
+
+                <AppBarButton x:Name="btnBack"
                           IsCompact="True" LabelPosition="Collapsed"
                           Icon="Back"
                           Click="btnBack_Click"
                          />
-            <Border x:Name="brdCultureChanged" Visibility="Collapsed">
-                <TextBlock x:Name="txtCultureChanged">Culture modifiée, veuillez relancer l'application</TextBlock>
-                
-            </Border>
-            <Button x:Name="btnDeconnexion"
+                <Border x:Name="brdCultureChanged" Visibility="Collapsed">
+                    <TextBlock x:Name="txtCultureChanged">Culture modifiée, veuillez relancer l'application</TextBlock>
+
+                </Border>
+                <Button x:Name="btnDeconnexion"
                     x:Uid="Button_Settings_Disconnect"
                     Click="btnDeconnexion_Click">Deconnexion</Button>
-            <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged">
-            </ComboBox>
-        </StackPanel>
+                <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged">
+                </ComboBox>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

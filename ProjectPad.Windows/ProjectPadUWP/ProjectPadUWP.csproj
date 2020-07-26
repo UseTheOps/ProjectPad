@@ -210,6 +210,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Images\cloud-download.svg" />
     <Content Include="logo-ops-noir.png" />
     <Content Include="ms-symbollockup_mssymbol_19.png" />
     <None Include="Package.StoreAssociation.xml" />
