@@ -12,7 +12,7 @@
     <Page.Resources>
         <local:ByteToImageSourceConverter x:Key="ByteToImage" />
     </Page.Resources>
-    
+
     <Grid>
 
         <VisualStateManager.VisualStateGroups>
@@ -39,18 +39,18 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel x:Name="stackPanel" Width="240" Visibility="Collapsed" Margin="20,100,20,20">
-            <Button Style="{StaticResource TransparentRevealButton}">
+            <Button Style="{StaticResource TransparentRevealButton}" Tag="stkGlobal" Click="btnScrollToClicked_Click">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="Images/cloud-download.svg" Width="16" Height="16" VerticalAlignment="Center" Margin="0,5,6,0" />
-                    <TextBlock><Run Text="Stockage en ligne"/></TextBlock>
+                    <Image Source="Images/setting-slider-horizontal.svg" Width="16" Height="16" VerticalAlignment="Center" Margin="0,3,6,0" />
+                    <TextBlock><Run Text="Paramètres généraux"/></TextBlock>
                 </StackPanel>
             </Button>
         </StackPanel>
 
-        <ScrollViewer Grid.Column="1" Margin="20,100,20,20">
+        <ScrollViewer Grid.Column="1" Margin="20,100,20,20" x:Name="scrSettings">
             <StackPanel>
-
-                <TextBlock Text="Connecté en tant que" Style="{StaticResource OptionGroupHeader}" Margin="0,0,0,20"/>
+                <StackPanel x:Name="stkGlobal">
+                    <TextBlock Text="Connecté en tant que" Style="{StaticResource OptionGroupHeader}" Margin="0,0,0,20"/>
                     <StackPanel Orientation="Horizontal" Height="48" Margin="0,0,40,0">
                         <Custom:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind Converter={StaticResource ByteToImage}, Mode=OneWay, Path=CurrentSettings.Me.Image}" Height="48" />
                         <StackPanel VerticalAlignment="Center">
@@ -60,22 +60,22 @@
                             </StackPanel>
                         </StackPanel>
 
-                <Button x:Name="btnDeconnexion" Margin="60,0,0,0"
+                        <Button x:Name="btnDeconnexion" Margin="60,0,0,0"
                     x:Uid="Button_Settings_Disconnect"
                     Click="btnDeconnexion_Click" Content="Deconnexion" Style="{ThemeResource AccentButtonStyle}"/>
-                </StackPanel>
+                    </StackPanel>
 
-                <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Interface utilisateur" />
+                    <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Interface utilisateur" />
 
-                <TextBlock Text="Langue" Margin="0,0,0,4" />
-                <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged" MinWidth="400"/>
+                    <TextBlock Text="Langue" Margin="0,0,0,4" />
+                    <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged" MinWidth="400"/>
 
-                <Border x:Name="brdCultureChanged" Background="#FFE69D9D" 
+                    <Border x:Name="brdCultureChanged" Background="#FFE69D9D" 
                         BorderThickness="3" BorderBrush="Firebrick"
                         Padding="20,20,21,20" Margin="0,20" Visibility="Collapsed">
-                    <TextBlock x:Name="txtCultureChanged" Foreground="Firebrick" FontWeight="Bold"><Run Text="Culture modifiée, veuillez relancer l'application"/></TextBlock>
-                </Border>
-
+                        <TextBlock x:Name="txtCultureChanged" Foreground="Firebrick" FontWeight="Bold"><Run Text="Culture modifiée, veuillez relancer l'application"/></TextBlock>
+                    </Border>
+                </StackPanel>
 
                 <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Données locales" />
                 <Button x:Name="btnClearCache"

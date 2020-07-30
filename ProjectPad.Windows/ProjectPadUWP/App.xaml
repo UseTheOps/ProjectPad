@@ -9,7 +9,7 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
             <Style x:Key="OptionGroupHeader" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{ThemeResource SystemAccentColorDark2}"/>
+                <Setter Property="Foreground" Value="{ThemeResource SystemAccentColorDark1}"/>
                 <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
                 <Setter Property="Margin" Value="0,30,0,10"/>
             </Style>

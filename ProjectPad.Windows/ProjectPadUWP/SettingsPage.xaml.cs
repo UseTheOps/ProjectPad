@@ -130,7 +130,7 @@ namespace ProjectPadUWP
                 if (lang == null || !lang.Equals(t))
                     hasChanged = true;
             }
-            else if(!string.IsNullOrEmpty(lang)) // lang was not null and should now be
+            else if (!string.IsNullOrEmpty(lang)) // lang was not null and should now be
                 hasChanged = true;
 
             if (!hasChanged)
@@ -162,6 +162,16 @@ namespace ProjectPadUWP
             finally
             {
                 this.IsEnabled = true;
+            }
+        }
+
+        private void btnScrollToClicked_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn != null && !string.IsNullOrEmpty(btn.Tag as string))
+            {
+                var elm = scrSettings.FindName(btn.Tag as string) as FrameworkElement;
+                elm.StartBringIntoView();
             }
         }
     }

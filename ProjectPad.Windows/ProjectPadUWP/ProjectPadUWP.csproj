@@ -214,6 +214,16 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Images\cloud-download.svg" />
+    <Content Include="Images\edit-pen-2.svg" />
+    <Content Include="Images\house-hurricane.svg" />
+    <Content Include="Images\interface-content-file.svg" />
+    <Content Include="Images\edit-skull-2.svg" />
+    <Content Include="Images\settings-menu-horizontal.svg" />
+    <Content Include="Images\setting-menu-vertical.svg" />
+    <Content Include="Images\setting-slider-horizontal.svg" />
+    <Content Include="Images\setting-slider-vertical.svg" />
+    <Content Include="Images\cloud-add.svg" />
+    <Content Include="Images\programming-script.svg" />
     <Content Include="logo-ops-noir.png" />
     <Content Include="ms-symbollockup_mssymbol_19.png" />
     <None Include="Package.StoreAssociation.xml" />
