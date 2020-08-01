@@ -55,6 +55,11 @@
                             </MenuFlyout>
                         </AppBarButton.Flyout>
                     </AppBarButton>
+
+                    <AppBarSeparator Foreground="#efefef" />
+                    <AppBarButton Icon="Save" Label="Save as..." IsCompact="True" Foreground="#efefef" x:Name="btnSaveAs" Click="btnSaveAs_Click">
+                    </AppBarButton>
+
                 </CommandBar.PrimaryCommands>
             </CommandBar>
 

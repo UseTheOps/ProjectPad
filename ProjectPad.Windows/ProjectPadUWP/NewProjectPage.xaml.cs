@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page https://go.microsoft.com/fwlink/?LinkId=234238
@@ -47,6 +48,12 @@ namespace ProjectPadUWP
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("pageTitleAnimation");
+            if (anim != null)
+            {
+                anim.TryStart(stkTitrePage);
+            }
 
             CoreApplicationViewTitleBar coreTitleBar = AppTitleBar.InitHeaderBar();
         }

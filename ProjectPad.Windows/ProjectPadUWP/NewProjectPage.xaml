@@ -6,13 +6,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{StaticResource TheBackground}">
 
     <Grid>
         <local:BasicHeader x:Name="AppTitleBar" />
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="40,80,40,40">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="40,60,40,40">
             <StackPanel>
-                <TextBlock Text="Nom du projet" />
+
+                <StackPanel x:Name="stkTitrePage" Orientation="Horizontal" Margin="0,0,0,40" RenderTransformOrigin="0,0">
+                    <StackPanel.RenderTransform>
+                        <CompositeTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </StackPanel.RenderTransform>
+                    <SymbolIcon Symbol="NewFolder" Margin="0,0,6,0" />
+                    <TextBlock ><Run Text="Nouveau projet"/></TextBlock>
+                </StackPanel>
+
+                <TextBlock Text="Nom du projet" Style="{StaticResource FieldLabel}" />
                 <TextBox Text="{x:Bind NewProjectItem.Name, Mode=TwoWay}" />
 
                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">

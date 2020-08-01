@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,8 +10,20 @@ namespace ProjectPad.Business
 {
     partial class ProjectViewModel
     {
+
+        public async Task SaveToFile(Stream stream)
+        {
+            string projectId = this.MetaData.Id;
+            //ZipFile.CreateFromDirectory($"{this.MetaData.Id}\\", path);
+            using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, false))
+            {
+                var t = await ProjectPadApplication._settingsMgr.OpenFileForRead($"{projectId}\\meta.json");
+                using (var st2 = zip.CreateEntry("meta.json").Open())
+                    await t.BaseStream.CopyToAsync(st2);
+            }
+        }
         
-        public async Task Save()
+        public async Task SaveToLocalCache()
         {
             if (_IsSaving)
                 return;
@@ -52,18 +65,18 @@ namespace ProjectPad.Business
                 ItemKind = ProjectItemKind.Title,
                 StringContent = name
             });
-            await t.Save();
+            await t.SaveToLocalCache();
             return t;
         }
 
 
-        public async Task Load()
+        public async Task LoadFromLocalCache()
         {
-            await LoadMetaData(this.MetaData.Id, this);
-            await LoadCoreData();
+            await LoadMetaDataFromLocalCache(this.MetaData.Id, this);
+            await LoadCoreDataFromLocalCache();
         }
 
-        private static async Task LoadMetaData(string projectId, ProjectViewModel p)
+        private static async Task LoadMetaDataFromLocalCache(string projectId, ProjectViewModel p)
         {
             using (var t = await ProjectPadApplication._settingsMgr.OpenFileForRead($"{projectId}\\meta.json"))
             {
@@ -79,7 +92,7 @@ namespace ProjectPad.Business
             }
         }
 
-        private async Task LoadCoreData()
+        private async Task LoadCoreDataFromLocalCache()
         {
             try
             {

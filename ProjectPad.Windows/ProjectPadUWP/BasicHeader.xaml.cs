@@ -29,22 +29,30 @@ namespace ProjectPadUWP
 
         public CoreApplicationViewTitleBar InitHeaderBar()
         {
-            
+            Window.Current.SetTitleBar(this);
+
             // changing title bar to custom
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
-            Window.Current.SetTitleBar(this);
             Window.Current.Activated += Current_Activated;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
-            
+
+            coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged1;
+
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             Color c = new Color() { R = 0xF5, G = 0xF5, B = 0xF5 };
+            
             titleBar.ButtonForegroundColor = Windows.UI.Colors.DimGray;
             titleBar.ButtonBackgroundColor = c;
             titleBar.ButtonInactiveForegroundColor = Windows.UI.Colors.DimGray;
             titleBar.ButtonInactiveBackgroundColor = c;
             return coreTitleBar;
+        }
+
+        private void CoreTitleBar_IsVisibleChanged1(CoreApplicationViewTitleBar sender, object args)
+        {
+            this.Visibility = sender.IsVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void Current_Activated(object sender, Windows.UI.Core.WindowActivatedEventArgs e)
@@ -61,11 +69,12 @@ namespace ProjectPadUWP
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
-            AppTitleBar.Height = sender.Height;
-
+            //AppTitleBar.Height = sender.Height;
+            
 
             LeftPaddingColumn.Width = new GridLength(sender.SystemOverlayLeftInset);
             RightPaddingColumn.Width = new GridLength(sender.SystemOverlayRightInset);
+            pnlTitre.Margin = new Thickness(sender.SystemOverlayLeftInset, 0, sender.SystemOverlayRightInset, 0);
         }
 
         private void CoreTitleBar_IsVisibleChanged(CoreApplicationViewTitleBar sender, object args)

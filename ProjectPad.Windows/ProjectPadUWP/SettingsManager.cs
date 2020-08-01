@@ -117,5 +117,20 @@ namespace ProjectPadUWP
             }
 
         }
+
+        public async Task<string> GetFullPath(string folderName)
+        {
+            var st = ApplicationData.Current.LocalFolder;
+            try
+            {
+                var item = await st.GetItemAsync(folderName);
+                return item.Path;
+            }
+            catch (FileNotFoundException)
+            {
+                
+            }
+            return null;
+        }
     }
 }

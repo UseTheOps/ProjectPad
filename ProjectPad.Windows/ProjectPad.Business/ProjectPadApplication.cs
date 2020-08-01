@@ -72,7 +72,7 @@ namespace ProjectPad.Business
                     Name = name
                 },
             };
-            await p.Save();
+            await p.SaveToLocalCache();
             await AddToRecentList(p);
             return p;
         }

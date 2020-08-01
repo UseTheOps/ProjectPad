@@ -9,6 +9,8 @@ using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.UserActivities;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
@@ -48,7 +50,7 @@ namespace ProjectPadUWP
             if (this.CurrentProject.IsDirty)
             {
                 _timerSave.Stop();
-                await this.CurrentProject.Save();
+                await this.CurrentProject.SaveToLocalCache();
                 _timerSave.Start();
             }
         }
@@ -202,13 +204,32 @@ namespace ProjectPadUWP
 
         private async void btnClosePage_Click(object sender, RoutedEventArgs e)
         {
-            await this.CurrentProject.Save();
+            await this.CurrentProject.SaveToLocalCache();
             this.Frame.Navigate(typeof(MainPage));
         }
 
         private void AddContentMenuItem_Clicked(object sender, RoutedEventArgs e)
         {
            
+        }
+
+        private async void btnSaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            FileSavePicker savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            // Dropdown of file types the user can save the file as
+            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".prjpad" });
+            // Default file name if the user does not type one in or select a file to replace
+            savePicker.SuggestedFileName = this.CurrentProject.MetaData.Name;
+
+            StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                CachedFileManager.DeferUpdates(file);
+                using(var st = await file.OpenStreamForWriteAsync())
+                    await this.CurrentProject.SaveToFile(st);
+                var status = await CachedFileManager.CompleteUpdatesAsync(file);
+            }
         }
     }
 }

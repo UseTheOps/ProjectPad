@@ -138,7 +138,15 @@ namespace ProjectPadUWP
 
         private void btnNewProject_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(NewProjectPage));
+            StackPanel stk = btnNewProject.Content as StackPanel;
+            if (stk != null)
+            {
+                ConnectedAnimationService.GetForCurrentView()
+                    .PrepareToAnimate("pageTitleAnimation", stk);
+            }
+
+
+            this.Frame.Navigate(typeof(NewProjectPage), null, new SuppressNavigationTransitionInfo());
         }
     }
 }

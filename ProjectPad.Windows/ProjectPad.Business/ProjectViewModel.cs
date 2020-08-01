@@ -28,7 +28,7 @@ namespace ProjectPad.Business
 
             try
             {
-                await LoadMetaData(projectId, p);
+                await LoadMetaDataFromLocalCache(projectId, p);
             }
             catch (FileNotFoundException)
             {
@@ -37,7 +37,7 @@ namespace ProjectPad.Business
 
             if (p.IsAvailableOnLocal)
             {
-                await p.LoadCoreData();
+                await p.LoadCoreDataFromLocalCache();
             }
             else
             {

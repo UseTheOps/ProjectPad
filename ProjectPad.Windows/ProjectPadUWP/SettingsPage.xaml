@@ -67,7 +67,7 @@
 
                     <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Interface utilisateur" />
 
-                    <TextBlock Text="Langue" Margin="0,0,0,4" />
+                    <TextBlock Text="Langue" Style="{StaticResource FieldLabel}" />
                     <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged" MinWidth="400"/>
 
                     <Border x:Name="brdCultureChanged" Background="#FFE69D9D" 
