@@ -10,6 +10,7 @@ using Windows.ApplicationModel.UserActivities;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.System;
 using Windows.UI;
@@ -47,7 +48,7 @@ namespace ProjectPadUWP
 
         private async void _timerSave_Tick(object sender, object e)
         {
-            if (this.CurrentProject.IsDirty)
+            if (this.CurrentProject.IsLocalCacheDirty)
             {
                 _timerSave.Stop();
                 await this.CurrentProject.SaveToLocalCache();
@@ -227,8 +228,13 @@ namespace ProjectPadUWP
             {
                 CachedFileManager.DeferUpdates(file);
                 using(var st = await file.OpenStreamForWriteAsync())
-                    await this.CurrentProject.SaveToFile(st);
+                    await this.CurrentProject.SaveToFile(st, file.Path);
                 var status = await CachedFileManager.CompleteUpdatesAsync(file);
+
+                if (!StorageApplicationPermissions.FutureAccessList.ContainsItem(this.CurrentProject.MetaData.Id))
+                {
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(this.CurrentProject.MetaData.Id, file);
+                }
             }
         }
     }

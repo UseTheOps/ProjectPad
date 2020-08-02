@@ -18,5 +18,8 @@ namespace ProjectPad.Business
         Task WriteFile(string fileName, string content);
 
         Task ClearAll(bool includeRoaming);
+
+        Task<List<string>> EnumerateFiles(string folderName);
+        Task<List<string>> EnumerateFolders(string folderName);
     }
 }

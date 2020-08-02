@@ -13,6 +13,7 @@ namespace ProjectPad.Business
         {
             public string Id { get; set; }
             public string Name { get; set; }
+            public string LastPath { get; set; }
 
         }
         

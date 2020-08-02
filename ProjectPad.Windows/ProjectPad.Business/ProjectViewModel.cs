@@ -47,7 +47,7 @@ namespace ProjectPad.Business
             return p;
         }
 
-        public bool IsDirty
+        public bool IsLocalCacheDirty
         {
             get
             {

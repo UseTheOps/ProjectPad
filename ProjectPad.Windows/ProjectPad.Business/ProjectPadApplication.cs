@@ -175,6 +175,7 @@ namespace ProjectPad.Business
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public string LastPath { get; set; }
         public string Kind { get; set; }
         public DateTime LastChange { get; set; }
 
@@ -185,7 +186,8 @@ namespace ProjectPad.Business
                 Id = project.MetaData.Id,
                 LastChange = lastChange,
                 Kind = "",
-                Name = project.MetaData.Name
+                Name = project.MetaData.Name,
+                LastPath = project.MetaData.LastPath
             };
             return t;
         }

@@ -11,16 +11,24 @@ namespace ProjectPad.Business
     partial class ProjectViewModel
     {
 
-        public async Task SaveToFile(Stream stream)
+        public async Task SaveToFile(Stream stream, string filePath)
         {
             string projectId = this.MetaData.Id;
-            //ZipFile.CreateFromDirectory($"{this.MetaData.Id}\\", path);
+            this.MetaData.LastPath = filePath;
+            await SaveToLocalCache();
+
             using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, false))
             {
-                var t = await ProjectPadApplication._settingsMgr.OpenFileForRead($"{projectId}\\meta.json");
-                using (var st2 = zip.CreateEntry("meta.json").Open())
-                    await t.BaseStream.CopyToAsync(st2);
+                var files = await ProjectPadApplication._settingsMgr.EnumerateFiles($"{projectId}\\");
+                foreach (var file in files)
+                {
+                    using (var t = await ProjectPadApplication._settingsMgr.OpenFileForRead($"{projectId}\\" + file))
+                    using (var st2 = zip.CreateEntry(file).Open())
+                        await t.BaseStream.CopyToAsync(st2);
+                }
             }
+
+            await ProjectPadApplication.Instance.AddToRecentList(this);
         }
         
         public async Task SaveToLocalCache()

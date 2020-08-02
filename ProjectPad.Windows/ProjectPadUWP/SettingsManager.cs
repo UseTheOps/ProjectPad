@@ -132,5 +132,75 @@ namespace ProjectPadUWP
             }
             return null;
         }
+
+        public async Task<List<string>> EnumerateFiles(string folderName)
+        {
+            var st = ApplicationData.Current.LocalFolder;
+            try
+            {
+                List<string> ret = new List<string>();
+                var item = await st.GetFolderAsync(folderName);
+                await EnumerateFiles(item, item.Path, ret);
+                return ret;
+            }
+            catch (FileNotFoundException)
+            {
+
+            }
+            return new List<string>();
+        }
+
+        private async Task EnumerateFiles(StorageFolder folder, string root, List<string> ret)
+        {
+            var files = await folder.GetFilesAsync();
+            foreach(var file in files)
+            {
+                string pth = file.Path;
+                if (pth.StartsWith(root))
+                    pth = pth.Substring(root.Length);
+                if (pth.StartsWith("/") || pth.StartsWith("\\"))
+                    pth = pth.Substring(1);
+                ret.Add(pth);
+            }
+
+            var subFolders = await folder.GetFoldersAsync();
+            foreach (var subfolder in subFolders)
+                await EnumerateFiles(subfolder, root, ret);
+
+        }
+
+
+        public async Task<List<string>> EnumerateFolders(string folderName)
+        {
+            var st = ApplicationData.Current.LocalFolder;
+            try
+            {
+                List<string> ret = new List<string>();
+                var item = await st.GetFolderAsync(folderName);
+                await EnumerateFiles(item, item.Path, ret);
+                return ret;
+            }
+            catch (FileNotFoundException)
+            {
+
+            }
+            return new List<string>();
+        }
+
+        private async Task EnumerateFolders(StorageFolder folder, string root, List<string> ret)
+        {
+            var subFolders = await folder.GetFoldersAsync();
+            foreach (var subfolder in subFolders)
+            {
+                string pth = subfolder.Path;
+                if (pth.StartsWith(root))
+                    pth = pth.Substring(root.Length);
+                if (pth.StartsWith("/") || pth.StartsWith("\\"))
+                    pth = pth.Substring(1);
+                ret.Add(pth);
+                await EnumerateFiles(subfolder, root, ret);
+            }
+
+        }
     }
 }
