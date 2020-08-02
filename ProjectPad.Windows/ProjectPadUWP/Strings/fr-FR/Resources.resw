@@ -126,14 +126,35 @@
   <data name="Button_Settings_Disconnect.Content" xml:space="preserve">
     <value>Deconnexion</value>
   </data>
+  <data name="Button_Setttings_ClearLocalCache.Content" xml:space="preserve">
+    <value>Vider le cache</value>
+  </data>
   <data name="Button_Signin_Microsoft.Text" xml:space="preserve">
     <value>Connexion</value>
+  </data>
+  <data name="Combo_Settings_Locale.Header" xml:space="preserve">
+    <value>Langue</value>
   </data>
   <data name="Label_Home.Text" xml:space="preserve">
     <value>accueil</value>
   </data>
   <data name="Label_Home.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>accueil</value>
+  </data>
+  <data name="TextBlock_Settings_ChoiceGlobal.Text" xml:space="preserve">
+    <value>Paramètres généraux</value>
+  </data>
+  <data name="TextBlock_Settings_CultureChangedMessage.Text" xml:space="preserve">
+    <value>Culture modifiée, veuillez relancer l'application</value>
+  </data>
+  <data name="TextBlock_Settings_HeaderLocalCache.Text" xml:space="preserve">
+    <value>Cache de données</value>
+  </data>
+  <data name="TextBlock_Settings_HeaderSignedAs.Text" xml:space="preserve">
+    <value>Connecté en tant que</value>
+  </data>
+  <data name="TextBlock_Settings_HeaderUI.Text" xml:space="preserve">
+    <value>Interface utilisateur</value>
   </data>
   <data name="Text_CultureFromSystem" xml:space="preserve">
     <value>Utiliser la culture Windows si disponible</value>

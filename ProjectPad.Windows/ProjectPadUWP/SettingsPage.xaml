@@ -42,7 +42,7 @@
             <Button Style="{StaticResource TransparentRevealButton}" Tag="stkGlobal" Click="btnScrollToClicked_Click">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="Images/setting-slider-horizontal.svg" Width="16" Height="16" VerticalAlignment="Center" Margin="0,3,6,0" />
-                    <TextBlock><Run Text="Paramètres généraux"/></TextBlock>
+                    <TextBlock Text="Global settings" x:Uid="TextBlock_Settings_ChoiceGlobal"/>
                 </StackPanel>
             </Button>
         </StackPanel>
@@ -50,7 +50,7 @@
         <ScrollViewer Grid.Column="1" Margin="20,100,20,20" x:Name="scrSettings">
             <StackPanel>
                 <StackPanel x:Name="stkGlobal">
-                    <TextBlock Text="Connecté en tant que" Style="{StaticResource OptionGroupHeader}" Margin="0,0,0,20"/>
+                    <TextBlock Text="Signed in as" x:Uid="TextBlock_Settings_HeaderSignedAs" Style="{StaticResource OptionGroupHeader}" Margin="0,0,0,20"/>
                     <StackPanel Orientation="Horizontal" Height="48" Margin="0,0,40,0">
                         <Custom:PersonPicture Margin="0,0,10,0" ProfilePicture="{x:Bind Converter={StaticResource ByteToImage}, Mode=OneWay, Path=CurrentSettings.Me.Image}" Height="48" />
                         <StackPanel VerticalAlignment="Center">
@@ -62,24 +62,26 @@
 
                         <Button x:Name="btnDeconnexion" Margin="60,0,0,0"
                     x:Uid="Button_Settings_Disconnect"
-                    Click="btnDeconnexion_Click" Content="Deconnexion" Style="{ThemeResource AccentButtonStyle}"/>
+                    Click="btnDeconnexion_Click" Content="Sign out" Style="{ThemeResource AccentButtonStyle}"/>
                     </StackPanel>
 
-                    <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Interface utilisateur" />
+                    <TextBlock x:Uid="TextBlock_Settings_HeaderUI" Style="{StaticResource OptionGroupHeader}" Text="User Interface" />
 
-                    <TextBlock Text="Langue" Style="{StaticResource FieldLabel}" />
-                    <ComboBox x:Name="cboLang" SelectedValuePath="Code" SelectionChanged="cboLang_SelectionChanged" MinWidth="400"/>
+                    <ComboBox Header="Display language" x:Name="cboLang" SelectedValuePath="Code"
+                              x:Uid="Combo_Settings_Locale"
+                              SelectionChanged="cboLang_SelectionChanged" MinWidth="400" Style="{StaticResource ComboBoxWithHeader}"/>
 
                     <Border x:Name="brdCultureChanged" Background="#FFE69D9D" 
                         BorderThickness="3" BorderBrush="Firebrick"
                         Padding="20,20,21,20" Margin="0,20" Visibility="Collapsed">
-                        <TextBlock x:Name="txtCultureChanged" Foreground="Firebrick" FontWeight="Bold"><Run Text="Culture modifiée, veuillez relancer l'application"/></TextBlock>
+                        <TextBlock x:Name="txtCultureChanged" x:Uid="TextBlock_Settings_CultureChangedMessage" Foreground="Firebrick" FontWeight="Bold"><Run Text="Culture modifiée, veuillez relancer l'application"/></TextBlock>
                     </Border>
                 </StackPanel>
 
-                <TextBlock Style="{StaticResource OptionGroupHeader}" Text="Données locales" />
+                <TextBlock x:Uid="TextBlock_Settings_HeaderLocalCache" Style="{StaticResource OptionGroupHeader}" Text="Local cache" />
                 <Button x:Name="btnClearCache"
-                    Content="Vider le cache"
+                        x:Uid="Button_Setttings_ClearLocalCache"
+                    Content="Clear"
                     Click="btnClearCache_Click" />
 
 

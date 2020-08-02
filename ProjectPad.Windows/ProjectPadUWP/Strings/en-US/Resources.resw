@@ -126,14 +126,35 @@
   <data name="Button_Settings_Disconnect.Content" xml:space="preserve">
     <value>Sign out</value>
   </data>
+  <data name="Button_Setttings_ClearLocalCache.Content" xml:space="preserve">
+    <value>Clear</value>
+  </data>
   <data name="Button_Signin_Microsoft.Text" xml:space="preserve">
     <value>Sign-in</value>
+  </data>
+  <data name="Combo_Settings_Locale.Header" xml:space="preserve">
+    <value>Display language</value>
   </data>
   <data name="Label_Home.Text" xml:space="preserve">
     <value>home</value>
   </data>
   <data name="Label_Home.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>home</value>
+  </data>
+  <data name="TextBlock_Settings_ChoiceGlobal.Text" xml:space="preserve">
+    <value>Global settings</value>
+  </data>
+  <data name="TextBlock_Settings_CultureChangedMessage.Text" xml:space="preserve">
+    <value>Culture changed, please restart the application.</value>
+  </data>
+  <data name="TextBlock_Settings_HeaderLocalCache.Text" xml:space="preserve">
+    <value>Local cache</value>
+  </data>
+  <data name="TextBlock_Settings_HeaderSignedAs.Text" xml:space="preserve">
+    <value>Signed in as</value>
+  </data>
+  <data name="TextBlock_Settings_HeaderUI.Text" xml:space="preserve">
+    <value>User Interface</value>
   </data>
   <data name="Text_CultureFromSystem" xml:space="preserve">
     <value>Use OS culture if available</value>
