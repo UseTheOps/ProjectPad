@@ -73,6 +73,7 @@ namespace ProjectPadUWP
             CoreApplicationViewTitleBar coreTitleBar = AppTitleBar.InitHeaderBar();
 
             await RefreshCultureCombo();
+            await RefreshAdoPanel();
 
             KeyboardAccelerator GoBack = new KeyboardAccelerator();
             GoBack.Key = VirtualKey.GoBack;
@@ -142,8 +143,31 @@ namespace ProjectPadUWP
             else
                 await ProjectPadApplication.Instance.SetPreferredCulture(t);
 
+
+
             brdCultureChanged.Visibility = Visibility.Visible;
             btnBack.IsEnabled = false;
+        }
+
+        private async System.Threading.Tasks.Task RefreshAdoPanel()
+        {
+            bntAdoConnect.IsEnabled = false;
+            var adoTP = new AzureDevOpsTokenProvider();
+            if (await adoTP.HasSilentToken())
+            {
+                bntAdoConnect.Visibility = Visibility.Collapsed;
+                txtAdoConnected.Visibility = Visibility.Visible;
+                btnScrollToAzureDevops.IsEnabled = true;
+                btnScrollToAzureDevopsLeft.IsEnabled = true;
+            }
+            else
+            {
+                bntAdoConnect.Visibility = Visibility.Visible;
+                txtAdoConnected.Visibility = Visibility.Collapsed;
+                bntAdoConnect.IsEnabled = true;
+                btnScrollToAzureDevops.IsEnabled = false;
+                btnScrollToAzureDevopsLeft.IsEnabled = false;
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -172,6 +196,21 @@ namespace ProjectPadUWP
             {
                 var elm = scrSettings.FindName(btn.Tag as string) as FrameworkElement;
                 elm.StartBringIntoView();
+            }
+        }
+
+        private async void bntAdoConnect_Click(object sender, RoutedEventArgs e)
+        {
+            bntAdoConnect.IsEnabled = false;
+            try
+            {
+                var t = new AzureDevOpsTokenProvider();
+                var tk = await t.GetToken();
+                await RefreshAdoPanel();
+            }
+            finally
+            {
+                bntAdoConnect.IsEnabled = true;
             }
         }
     }
