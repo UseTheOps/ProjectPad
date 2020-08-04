@@ -36,6 +36,14 @@ namespace ProjectPad.Business
             await _singleton.RefreshRecent();
         }
 
+        public ITokenProvider GetTokenProvider(string type)
+        {
+            if (string.IsNullOrEmpty(type))
+                return _graphApiTokenProvider;
+            else
+                return _graphApiTokenProvider.GetSubTokenProvider(type);
+        }
+
         public async void RefreshGlobals()
         {
             bool newHasToken = await _graphApiTokenProvider.HasSilentToken();

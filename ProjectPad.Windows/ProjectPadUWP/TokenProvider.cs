@@ -12,6 +12,8 @@ namespace ProjectPadUWP
 {
     class TokenProvider : ITokenProvider
     {
+        private static AzureDevOpsTokenProvider tkPAdo = new AzureDevOpsTokenProvider();
+
         private static readonly string[] _graphApiScopes = new string[]
         {
             "https://graph.microsoft.com/email",
@@ -120,6 +122,20 @@ namespace ProjectPadUWP
                     await PublicClientApp.RemoveAsync(acc);
                 OnTokenChanged();
             }
+        }
+
+        public ITokenProvider GetSubTokenProvider(string tokenType)
+        {
+            switch(tokenType.ToLowerInvariant())
+            {
+                case "visualstudio":
+                case "azure devops":
+                case "azuredevops":
+                case "ado":
+                    return tkPAdo;
+            }
+
+            return null;
         }
     }
 
@@ -249,6 +265,11 @@ namespace ProjectPadUWP
                     await PublicClientApp.RemoveAsync(acc);
                 OnTokenChanged();
             }
+        }
+
+        public ITokenProvider GetSubTokenProvider(string tokenType)
+        {
+            return null;
         }
     }
 }

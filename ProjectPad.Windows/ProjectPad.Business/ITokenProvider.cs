@@ -13,5 +13,8 @@ namespace ProjectPad.Business
         Task ClearToken();
 
         event EventHandler TokenChanged;
+
+        ITokenProvider GetSubTokenProvider(string tokenType);
+
     }
 }

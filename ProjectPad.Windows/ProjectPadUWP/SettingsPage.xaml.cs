@@ -152,7 +152,7 @@ namespace ProjectPadUWP
         private async System.Threading.Tasks.Task RefreshAdoPanel()
         {
             bntAdoConnect.IsEnabled = false;
-            var adoTP = new AzureDevOpsTokenProvider();
+            var adoTP = ProjectPadApplication.Instance.GetTokenProvider("Azure Devops");
             if (await adoTP.HasSilentToken())
             {
                 bntAdoConnect.Visibility = Visibility.Collapsed;
@@ -204,7 +204,7 @@ namespace ProjectPadUWP
             bntAdoConnect.IsEnabled = false;
             try
             {
-                var t = new AzureDevOpsTokenProvider();
+                var t = ProjectPadApplication.Instance.GetTokenProvider("Azure Devops");
                 var tk = await t.GetToken();
                 await RefreshAdoPanel();
             }
