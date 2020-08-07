@@ -160,7 +160,7 @@ namespace ProjectPadUWP
     {
         private static readonly string[] _graphApiScopes = new string[]
        {
-            "https://app.vssps.visualstudio.com/user_impersonation"
+            "499b84ac-1321-427f-aa17-267ca6975798/user_impersonation"
        };
 
 
