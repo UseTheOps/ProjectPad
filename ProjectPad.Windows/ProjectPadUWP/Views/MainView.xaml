@@ -11,10 +11,16 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-
+             
         <DataTemplate x:Key="TitleProjectItem" >
             <Grid>
-                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <TextBox TextWrapping="Wrap" Grid.Column="1" Margin="72,32,24,24" PlaceholderText="Veuillez saisir le titre"
+                         FontWeight="SemiBold" Foreground="#191919" 
                          BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="48" />
             </Grid>
@@ -22,7 +28,11 @@
 
         <DataTemplate x:Key="TitleProjectItemLevel2" >
             <Grid>
-                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox Margin="72,32,24,0" Grid.Column="1" PlaceholderText="Veuillez saisir le titre"
                          BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="28" />
             </Grid>
@@ -30,7 +40,11 @@
 
         <DataTemplate x:Key="TitleProjectItemLevel3" >
             <Grid>
-                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox Margin="72,32,24,0" Grid.Column="1" PlaceholderText="Veuillez saisir le titre"
                          BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="24" />
             </Grid>
@@ -38,7 +52,11 @@
 
         <DataTemplate x:Key="TitleProjectItemLevel4" >
             <Grid>
-                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox Margin="72,32,24,0" Grid.Column="1"  PlaceholderText="Veuillez saisir le titre"
                          BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="18" />
             </Grid>
@@ -46,16 +64,24 @@
 
         <DataTemplate x:Key="TitleProjectItemLevel5" >
             <Grid>
-                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox Margin="72,32,24,0" Grid.Column="1"  PlaceholderText="Veuillez saisir le titre"
                          BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="14" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="TextContentProjectItem" >
             <Grid>
-            <TextBox Margin="72,10,24,10" BorderBrush="{x:Null}" BorderThickness="0"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox Margin="72,0,24,10" Grid.Column="1" BorderBrush="{x:Null}" BorderThickness="0"
                      PlaceholderText="Veuillez saisir le contenu"
-                     TextWrapping="Wrap"
+                     TextWrapping="Wrap" FontSize="16" FontWeight="SemiLight" Foreground="#292929"
                      AcceptsReturn="True" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" 
                      Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
@@ -75,12 +101,13 @@
     <Grid>
         <muxc:ScrollView>
         <ItemsControl
+            MaxWidth="1200" HorizontalAlignment="Left"
                         AutomationProperties.SizeOfSet="{x:Bind FallbackValue=0, Path=CurrentProject.ContentItems.Count}"
                         AutomationProperties.AccessibilityView="Content"
                         ItemsSource="{Binding ContentItems}" ItemTemplateSelector="{StaticResource TemplateSelector}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel />
+                    <StackPanel HorizontalAlignment="Stretch" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
