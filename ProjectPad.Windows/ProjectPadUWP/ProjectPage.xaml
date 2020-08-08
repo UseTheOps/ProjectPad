@@ -50,7 +50,8 @@
                     <AppBarButton Icon="Add" Label="Add" IsCompact="True" Foreground="#efefef">
                         <AppBarButton.Flyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Text="Title" Command="{x:Bind CurrentProject.AddContent}" CommandParameter="title"/>
+                                <MenuFlyoutItem Text="Title (same level)" Command="{x:Bind CurrentProject.AddContent}" CommandParameter="title"/>
+                                <MenuFlyoutItem Text="Sub-title" Command="{x:Bind CurrentProject.AddContent}" CommandParameter="subtitle"/>
                                 <MenuFlyoutItem Text="Contenu texte" Command="{x:Bind CurrentProject.AddContent}" CommandParameter="stringcontent"/>
                             </MenuFlyout>
                         </AppBarButton.Flyout>

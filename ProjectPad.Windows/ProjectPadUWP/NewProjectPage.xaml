@@ -21,7 +21,7 @@
                     <TextBlock ><Run Text="Nouveau projet"/></TextBlock>
                 </StackPanel>
 
-                <TextBox Header="Nom du projet" Text="{x:Bind NewProjectItem.Name, Mode=TwoWay}" Style="{StaticResource TextBoxWithHeader}" />
+                <TextBox Header="Nom du projet" x:Name="txtProjectName" Text="{x:Bind NewProjectItem.Name, Mode=TwoWay}" Style="{StaticResource TextBoxWithHeader}" />
 
                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                     <Button Content="OK" x:Name="btnOk" Click="btnOk_Click" Style="{ThemeResource AccentButtonStyle}" Margin="0,0,20,0">

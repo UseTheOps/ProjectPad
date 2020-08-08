@@ -11,6 +11,10 @@ namespace ProjectPadUWP.Views
     public class ProjectItemKindTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Title { get; set; }
+        public DataTemplate Title2 { get; set; }
+        public DataTemplate Title3 { get; set; }
+        public DataTemplate Title4 { get; set; }
+        public DataTemplate Title5 { get; set; }
         public DataTemplate TextContent { get; set; }
 
 
@@ -32,7 +36,16 @@ namespace ProjectPadUWP.Views
                 switch (prjItem.ItemKind)
                 {
                     case ProjectPad.Business.ProjectViewModel.ProjectItemKind.Title:
-                        return Title;
+                        switch(prjItem.TitleLevel)
+                        {
+                            case 0: return Title;
+                            case 1: return Title;
+                            case 2: return Title2;
+                            case 3: return Title3;
+                            case 4: return Title4;
+                            default : return Title5;
+                        }
+                        
                     case ProjectPad.Business.ProjectViewModel.ProjectItemKind.TextContent:
                         return TextContent;
 

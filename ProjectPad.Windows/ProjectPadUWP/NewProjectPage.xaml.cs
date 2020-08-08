@@ -55,6 +55,10 @@ namespace ProjectPadUWP
                 anim.TryStart(stkTitrePage);
             }
 
+            txtProjectName.Focus(FocusState.Keyboard);
+            Bindings.Update();
+            txtProjectName.SelectAll();
+
             CoreApplicationViewTitleBar coreTitleBar = AppTitleBar.InitHeaderBar();
         }
 

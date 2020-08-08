@@ -80,6 +80,9 @@ namespace ProjectPad.Business
                     Name = name
                 },
             };
+            var t = p.AddItem(ProjectViewModel.ProjectItemKind.Title, true);
+            t.StringContent = name;
+
             await p.SaveToLocalCache();
             await AddToRecentList(p);
             return p;

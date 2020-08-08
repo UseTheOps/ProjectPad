@@ -46,6 +46,28 @@ namespace ProjectPad.Business
                 }
             }
 
+
+            private int _TitleLevel = 0;
+
+            public int TitleLevel
+            {
+                get
+                {
+                    return _TitleLevel;
+                }
+                set
+                {
+                    if (value != _TitleLevel)
+                    {
+                        _TitleLevel = value;
+                        // DisablePropertyChangeEvent = true when loading
+                        if (!DisablePropertyChangeEvent)
+                            dtChanged = DateTimeOffset.Now;
+                        OnPropertyChanged(nameof(TitleLevel));
+                    }
+                }
+            }
+
             private string _StringContent = null;
 
             public string StringContent
@@ -68,7 +90,7 @@ namespace ProjectPad.Business
             }
 
 
-            private Guid _guid = Guid.Empty;
+            private Guid _guid = Guid.NewGuid();
 
             public Guid Guid
             {
@@ -90,7 +112,7 @@ namespace ProjectPad.Business
             }
 
 
-            private Guid? _parentGuid = Guid.Empty;
+            private Guid? _parentGuid = null;
 
             public Guid? ParentGuid
             {

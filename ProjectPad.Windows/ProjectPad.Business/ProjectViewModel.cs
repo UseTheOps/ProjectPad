@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectPad.Business
@@ -51,9 +50,9 @@ namespace ProjectPad.Business
         {
             get
             {
-                foreach(var r in _Items)
+                foreach (var r in _Items)
                 {
-                    
+
                     if (r.dtChanged > r.dtLoaded)
                         return true;
                 }
@@ -61,7 +60,7 @@ namespace ProjectPad.Business
                 return false;
             }
         }
-        
+
         private bool _IsAvailableOnLocal = false;
         public bool IsAvailableOnLocal
         {
@@ -116,6 +115,9 @@ namespace ProjectPad.Business
 
         public ProjectViewModelItem InsertItemAt(int index, ProjectItemKind kind, bool sameLevel)
         {
+            if (kind != ProjectItemKind.Title)
+                sameLevel = true;
+
             var dt = DateTime.Now;
             var it = new ProjectViewModelItem()
             {
@@ -124,11 +126,100 @@ namespace ProjectPad.Business
                 dtChanged = dt,
                 dtLoaded = DateTimeOffset.Now.AddDays(-1)
             };
+
+
+            ProjectViewModelItem parent = null;
+            if (index >= _Items.Count)
+            {
+                if (index > 0)
+                    parent = _Items[_Items.Count - 1];
+            }
+            else
+            {
+                if (index > 0)
+                    parent = _Items[index - 1];
+            }
+
+            if (parent != null)
+            {
+                if(parent.ItemKind == ProjectItemKind.Title 
+                    && parent.TitleLevel == 1)
+                {
+                    it.ParentGuid = parent.Guid;
+                    if (ProjectItemKind.Title == kind)
+                        it.TitleLevel = parent.TitleLevel +1;
+                }
+                else if (sameLevel)
+                {
+                    if (parent.ParentGuid.HasValue)
+                    {
+                        if (parent.ItemKind == ProjectItemKind.Title)
+                            it.ParentGuid = parent.Guid;
+                        else
+                            it.ParentGuid = parent.ParentGuid.Value;
+                    }
+                    else
+                    {
+                        // ca veut dire qu'il faut obligatoirement 
+                        // que ce soit un sous item
+                        it.ParentGuid = parent.Guid;
+                    }
+                    if (ProjectItemKind.Title == kind)
+                    {
+                        ProjectViewModelItem title = Get(it.ParentGuid.Value);
+                        if(title != null)
+                        {
+                            it.TitleLevel = title.TitleLevel;
+                            it.ParentGuid = title.Guid;
+                        }
+                    }
+                }
+                else
+                {
+                    if(parent.ItemKind == ProjectItemKind.Title)
+                        it.ParentGuid = parent.Guid;
+                    else
+                        it.ParentGuid = parent.ParentGuid.Value;
+
+                    if (ProjectItemKind.Title == kind)
+                    {
+                        var title = Get(it.ParentGuid.Value);
+                        if (title != null)
+                        {
+                            it.TitleLevel = title.TitleLevel + 1;
+                            it.ParentGuid = title.Guid;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (ProjectItemKind.Title == kind)
+                    it.TitleLevel = 1;
+            }
+
+
             _Items.Insert(index, it);
             OnPropertyChanged(nameof(ContentItems));
             return it;
         }
 
+
+
+        //private ProjectViewModelItem GetParent(Guid parentGuid)
+        //{
+        //    return (from z in _Items
+        //            where z.ParentGuid.HasValue && z.ParentGuid == parentGuid
+        //               && z.ItemKind == ProjectItemKind.Title
+        //            select z).FirstOrDefault();
+        //}
+
+        private ProjectViewModelItem Get(Guid itemGuid)
+        {
+            return (from z in _Items
+                    where z.Guid.Equals(itemGuid)
+                    select z).FirstOrDefault();
+        }
 
     }
 

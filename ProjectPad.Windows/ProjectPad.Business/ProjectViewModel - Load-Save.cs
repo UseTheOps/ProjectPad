@@ -113,7 +113,7 @@ namespace ProjectPad.Business
                     DisablePropertyChangeEvent = true;
 
                     // comparer chaque bloc et mettre à jour
-
+                    
                     this._Items.Clear();
                     foreach (var r in itsFile)
                     {

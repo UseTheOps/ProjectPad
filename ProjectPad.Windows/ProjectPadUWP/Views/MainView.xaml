@@ -16,10 +16,41 @@
             <Grid>
                 <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
                          BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     FontSize="32" />
+                     FontSize="48" />
             </Grid>
         </DataTemplate>
 
+        <DataTemplate x:Key="TitleProjectItemLevel2" >
+            <Grid>
+                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                         BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     FontSize="28" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TitleProjectItemLevel3" >
+            <Grid>
+                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                         BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     FontSize="24" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TitleProjectItemLevel4" >
+            <Grid>
+                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                         BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     FontSize="18" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TitleProjectItemLevel5" >
+            <Grid>
+                <TextBox Margin="72,40,24,10" PlaceholderText="Veuillez saisir le titre"
+                         BorderBrush="{x:Null}" BorderThickness="0" Text="{Binding StringContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     FontSize="14" />
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:Key="TextContentProjectItem" >
             <Grid>
             <TextBox Margin="72,10,24,10" BorderBrush="{x:Null}" BorderThickness="0"
@@ -32,12 +63,17 @@
 
         <local:ProjectItemKindTemplateSelector x:Key="TemplateSelector"
                                                Title="{StaticResource TitleProjectItem}"
+                                               Title2="{StaticResource TitleProjectItemLevel2}"
+                                               Title3="{StaticResource TitleProjectItemLevel3}"
+                                               Title4="{StaticResource TitleProjectItemLevel4}"
+                                               Title5="{StaticResource TitleProjectItemLevel5}"
                                                TextContent="{StaticResource TextContentProjectItem}"
                                                />
 
     </Page.Resources>
     
     <Grid>
+        <muxc:ScrollView>
         <ItemsControl
                         AutomationProperties.SizeOfSet="{x:Bind FallbackValue=0, Path=CurrentProject.ContentItems.Count}"
                         AutomationProperties.AccessibilityView="Content"
@@ -48,6 +84,6 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-
+        </muxc:ScrollView>
     </Grid>
 </Page>
