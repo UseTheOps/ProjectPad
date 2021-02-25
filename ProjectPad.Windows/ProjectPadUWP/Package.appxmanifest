@@ -9,7 +9,7 @@
   <Identity
     Name="CreoIgnem.ProjectPad"
     Publisher="CN=230A60E5-FA80-4D5A-9A0E-B4E47BA156C5"
-    Version="1.0.36.0" />
+    Version="1.0.38.0" />
 
   <mp:PhoneIdentity PhoneProductId="182e776c-3109-4216-b8ca-a59caf321e8d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
